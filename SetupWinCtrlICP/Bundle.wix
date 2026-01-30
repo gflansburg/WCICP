@@ -1,0 +1,29 @@
+﻿<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+         xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
+  <Bundle Name="WinCtrl ICP Installer" Version="1.0.0.0" Manufacturer="Gafware" UpgradeCode="EFDEEB8C-0D93-42B7-B973-0CDD9439E7ED">
+    <WixVariable Id="WixBundleIcon" Value="WinCtrlICPIcon.ico" />
+    <WixVariable Id="WixBundleCompressed" Value="yes" />
+    <Variable Name="InstallFolder" Type="string" Value="[AppDataFolder]Gafware\WinCtrlICP\" />
+	  <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
+		  <bal:WixStandardBootstrapperApplication 
+			  LicenseFile="EULA.rtf"
+			  LogoFile="WinCtrlICPIcon.bmp"
+        ThemeFile="CustomRtfTheme.xml"
+        LocalizationFile="CustomRtfTheme.wxl"
+        SuppressOptionsUI="yes"
+        LaunchTargetElevatedId="MyAEEId" />
+    </BootstrapperApplicationRef>
+    <Chain>
+      <ExePackage Id="Net10DesktopRuntime"
+                      SourceFile="windowsdesktop-runtime-10.0.2-win-x64.exe"
+                      InstallCommand="/quiet /norestart"
+                      Permanent="yes"
+                      Vital="yes" />
+      <MsiPackage SourceFile="bin\Release\SetupWinCtrlICP.msi" Vital="yes" DisplayInternalUI="yes">
+        <MsiProperty Name="INSTALLDIR" Value="[InstallFolder]" />
+      </MsiPackage>
+    </Chain>
+    <!--<Variable Name="LaunchTarget" Value="[InstallFolder]WinCtrlICP.exe" />-->
+  </Bundle>
+</Wix>

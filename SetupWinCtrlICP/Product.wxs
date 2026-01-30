@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*"
+           Name="WinCtrlICP"
+           Language="1033"
+           Version="1.0.0.0"
+           Manufacturer="Gafware"
+           UpgradeCode="F69BF552-C2F4-4CEC-AAC5-81A9C53A1D3B">
+
+    <!-- Per-user install (matches AppDataFolder + HKCU usage) -->
+    <Package InstallerVersion="500"
+             Compressed="yes"
+             InstallScope="perUser" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <Media Id="1" Cabinet="media1.cab" EmbedCab="yes" />
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
+    <!-- UI assets -->
+    <WixVariable Id="WixUIBannerBmp" Value="WinCtrlICPBanner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="WinCtrlICPDialog.png" />
+    <WixVariable Id="WixUIInfoIco" Value="WinCtrlICPIcon.ico" />
+    <WixVariable Id="WixUILicenseRtf" Value="EULA.rtf" />
+
+    <!-- Exit dialog "Launch" checkbox -->
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch WinCtrl ICP" />
+    <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOX" Value="1" />
+
+    <!-- Directory tree -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="DesktopFolder" />
+      <Directory Id="AppDataFolder">
+        <Directory Id="CompanyFolder" Name="Gafware">
+          <Directory Id="INSTALLDIR" Name="WinCtrlICP">
+
+            <!-- InstallPath registry marker -->
+            <Component Id="RegistryComponent" Guid="297B9FD3-B769-4B44-8FE6-9C95DA92637A">
+              <RegistryValue Root="HKCU"
+                             Key="Software\Gafware\WinCtrlICP"
+                             Name="InstallPath"
+                             Value="[INSTALLDIR]"
+                             Type="string"
+                             KeyPath="yes" />
+            </Component>
+
+            <!-- Main EXE (ONLY ONCE) + desktop shortcut -->
+            <Component Id="MainExecutable" Guid="0A067F35-24D0-4B18-8363-450881921FFD">
+              <File Id="WinCtrlICPExe"
+                    Source="$(var.SourceDir)\WinCtrlICP.exe">
+                <Shortcut Id="DesktopShortcut"
+                          Directory="DesktopFolder"
+                          Name="WinCtrl ICP"
+                          WorkingDirectory="INSTALLDIR" />
+              </File>
+
+              <File Id="filFlightSim" Source="$(var.SourceDir)\FlightSim.dll" />
+              <File Id="filFsuipcClient" Source="$(var.SourceDir)\fsuipcClient.dll" />
+              <File Id="filJace" Source="$(var.SourceDir)\Jace.dll" />
+              <File Id="filSimConnectManaged" Source="$(var.SourceDir)\Microsoft.FlightSimulator.SimConnect.dll" />
+              <File Id="filNewtonsoft" Source="$(var.SourceDir)\Newtonsoft.Json.dll" />
+              <File Id="filNLog" Source="$(var.SourceDir)\NLog.dll" />
+              <File Id="filProtobufCore" Source="$(var.SourceDir)\protobuf-net.Core.dll" />
+              <File Id="filProtobuf" Source="$(var.SourceDir)\protobuf-net.dll" />
+              <File Id="filRestSharp" Source="$(var.SourceDir)\RestSharp.dll" />
+              <File Id="filSharpDxDI" Source="$(var.SourceDir)\SharpDX.DirectInput.dll" />
+              <File Id="filSharpDx" Source="$(var.SourceDir)\SharpDX.dll" />
+              <File Id="filSimConnectNative" Source="$(var.SourceDir)\SimConnect.dll" />
+              <File Id="filTheraot" Source="$(var.SourceDir)\Theraot.Core.dll" />
+              <File Id="filWinCtrlIcpDll" Source="$(var.SourceDir)\WinCtrlICP.dll" />
+              <File Id="filWinCtrlIcpConfig" Source="$(var.SourceDir)\WinCtrlICP.dll.config" />
+              <File Id="filWinCtrlIcpDepsJson" Source="$(var.SourceDir)\WinCtrlICP.deps.json" />
+              <File Id="filWinCtrlIcpRuntimeConfigJson" Source="$(var.SourceDir)\WinCtrlICP.runtimeconfig.json" />
+
+              <RegistryValue Root="HKCU" Key="Software\Gafware\WinCtrlICP" Name="InstalledVersion" Type="string" Value="[ProductVersion]" KeyPath="yes" />
+              <RemoveFile Id="RemoveAppFiles" Name="*" On="uninstall" />
+            </Component>
+
+            <!-- Remove install folder on uninstall -->
+            <Component Id="AppFolderRemoval" Guid="BDA7B824-69E1-4E8A-B496-75DA4EDB7423">
+              <RemoveFolder Id="RemoveAppFolder" On="uninstall" />
+              <!-- Provide a keypath so MSI can track the component -->
+              <RegistryValue Root="HKCU"
+                             Key="Software\Gafware\WinCtrlICP"
+                             Name="AppFolderRemoval"
+                             Type="integer"
+                             Value="1"
+                             KeyPath="yes" />
+            </Component>
+
+          </Directory>
+
+          <!-- Remove company folder on uninstall -->
+          <Component Id="CompanyFolderRemoval" Guid="F07EA68E-39E9-4508-8F1E-E2BAF53033A2">
+            <RemoveFolder Id="RemoveCompanyFolder" On="uninstall" />
+            <RegistryValue Root="HKCU"
+                           Key="Software\Gafware"
+                           Name="CompanyFolderRemoved"
+                           Type="integer"
+                           Value="1"
+                           KeyPath="yes" />
+          </Component>
+
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <!-- Feature -->
+    <Feature Id="MainFeature" Title="WinCtrlICP" Level="1">
+      <ComponentRef Id="MainExecutable" />
+      <ComponentRef Id="RegistryComponent" />
+      <ComponentRef Id="AppFolderRemoval" />
+      <ComponentRef Id="CompanyFolderRemoval" />
+    </Feature>
+
+    <!-- UI -->
+    <UI Id="WixUI_InstallDir">
+      <TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+      <TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+      <TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+
+      <Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+      <Property Id="WixUI_Mode" Value="InstallDir" />
+
+      <DialogRef Id="BrowseDlg" />
+      <DialogRef Id="DiskCostDlg" />
+      <DialogRef Id="ErrorDlg" />
+      <DialogRef Id="FatalError" />
+      <DialogRef Id="FilesInUse" />
+      <DialogRef Id="MsiRMFilesInUse" />
+      <DialogRef Id="PrepareDlg" />
+      <DialogRef Id="ProgressDlg" />
+      <DialogRef Id="ResumeDlg" />
+      <DialogRef Id="UserExit" />
+
+      <Publish Dialog="BrowseDlg" Control="OK" Event="DoAction" Value="WixUIValidatePath" Order="3">1</Publish>
+      <Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="4"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+
+      <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">NOT Installed</Publish>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
+
+      <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">LicenseAccepted = "1"</Publish>
+
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="SpawnDialog" Value="InvalidDirDlg" Order="3"><![CDATA[NOT WIXUI_DONTVALIDATEPATH AND WIXUI_INSTALLDIR_VALID<>"1"]]></Publish>
+      <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
+      <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
+
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg" Order="1">NOT Installed</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed AND NOT PATCH</Publish>
+      <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">Installed AND PATCH</Publish>
+
+      <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+
+      <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+      <Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+
+      <Property Id="ARPNOMODIFY" Value="1" />
+    </UI>
+
+    <UIRef Id="WixUI_Common" />
+
+    <!-- Launch app on Finish (uses WixShellExec) -->
+    <Property Id="WixShellExecTarget" Value="[#WinCtrlICPExe]" />
+
+    <CustomAction Id="LaunchApplication"
+                  BinaryKey="WixCA"
+                  DllEntry="WixShellExec"
+                  Impersonate="yes" />
+
+    <UI>
+      <Publish Dialog="ExitDialog"
+               Control="Finish"
+               Event="DoAction"
+               Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
+    </UI>
+
+  </Product>
+</Wix>

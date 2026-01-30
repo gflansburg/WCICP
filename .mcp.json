@@ -1,0 +1,26 @@
+﻿{
+  "servers": {
+    "telerik-winforms-assistant": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@progress/telerik-winforms-mcp@latest"
+      ],
+      "env": {
+        "TELERIK_LICENSE_PATH": "C:\\Users\\gafma\\AppData\\Roaming\\Telerik\\telerik-license.txt"
+      }
+    },
+    "telerik-dpl-assistant": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@progress/telerik-dpl-mcp@latest"
+      ],
+      "env": {
+        "TELERIK_LICENSE_PATH": "C:\\Users\\gafma\\AppData\\Roaming\\Telerik\\telerik-license.txt"
+      }
+    }
+  }
+}

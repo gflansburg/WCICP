@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyTitle>WinCtrl ICP</AssemblyTitle>
+    <ApplicationIcon>fighter-jet-icon-speed.ico</ApplicationIcon>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="F16DEDWriter\**" />
+    <EmbeddedResource Remove="F16DEDWriter\**" />
+    <None Remove="F16DEDWriter\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="F16DEDWriter.zip" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="fighter-jet-icon-speed.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="F16DEDWriter.zip" />
+    <EmbeddedResource Include="LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlightSim\FlightSim.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="AboutDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="SimAppProForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="IcpDisplayControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="LicenseDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="SimAppProSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="XPlaneSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <Generator>SettingsSingleFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+
+</Project>
