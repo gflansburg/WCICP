@@ -1943,10 +1943,6 @@ namespace FlightSim
                     result = FormatTransponderMode(tm); // return core token (no padding)
                     break;
 
-                case FlightPlanApproachWaypointType fpawt:
-                    result = fpawt.ToString().SplitTitleCase();
-                    break;
-
                 case IFormattable formattable when !string.IsNullOrEmpty(meta.Format):
                     result = formattable.ToString(meta.Format, CultureInfo.InvariantCulture);
                     break;
