@@ -41,6 +41,8 @@ The following displays are included out of the box:
 - **HROT** – Helicoptor rotor systems
 - **HDIS** – Helicoptor dynamics and instruments
 - **HCTL** – Helicoptor flight controls
+- **BALN** – Balloon envelope, burner, vent, and thermal status
+- **AIRS** – Airship gas compartment, pressure, volume, weight, and mast systems
 
 Each display is:
 - Aircraft-agnostic  
