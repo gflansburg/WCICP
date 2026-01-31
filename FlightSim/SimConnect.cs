@@ -1000,7 +1000,7 @@ namespace FlightSim
                     bool engCombustion = Convert.ToBoolean(aircraftData.ENG_COMBUSTION);
                     var myLat = CurrentAircraft.Position.Latitude;
                     var myLon = CurrentAircraft.Position.Longitude;
-                    double distanceNm = Tools.DistanceTo(myLat.Value, myLon.Value, aircraftData.PLANE_LATITUDE, aircraftData.PLANE_LONGITUDE, 'N');
+                    double distanceNm = Tools.DistanceTo(myLat.Value, myLon.Value, aircraftData.PLANE_LATITUDE, aircraftData.PLANE_LONGITUDE, DistanceUnit.NauticalMiles);
                     // Remove if outside radius OR parked/dead on ground.
                     if (myLat != null && myLon != null)
                     {

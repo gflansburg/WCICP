@@ -616,7 +616,7 @@ namespace FlightSim
                     Longitude,
                     wlat,
                     wlon,
-                    'N'
+                    DistanceUnit.NauticalMiles
                 );
 
                 if (distanceNm <= 0)
@@ -652,7 +652,7 @@ namespace FlightSim
                 double wlon = WaypointLongitude;
                 if (wlat == 0 && wlon == 0) return 0; // “not available” convention
 
-                return Tools.DistanceTo(Latitude, Longitude, wlat, wlon, 'N');
+                return Tools.DistanceTo(Latitude, Longitude, wlat, wlon, DistanceUnit.NauticalMiles);
             }
         }
 
@@ -667,7 +667,7 @@ namespace FlightSim
                 double wlon = WaypointLongitude;
                 if (wlat == 0 && wlon == 0) return 0;
 
-                return Tools.DistanceTo(Latitude, Longitude, wlat, wlon, 'K');
+                return Tools.DistanceTo(Latitude, Longitude, wlat, wlon, DistanceUnit.Kilometers);
             }
         }
 
@@ -682,7 +682,7 @@ namespace FlightSim
                 double wlon = WaypointLongitude;
                 if (wlat == 0 && wlon == 0) return 0;
 
-                return Tools.DistanceTo(Latitude, Longitude, wlat, wlon, 'M');
+                return Tools.DistanceTo(Latitude, Longitude, wlat, wlon, DistanceUnit.Miles);
             }
         }
 

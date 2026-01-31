@@ -400,9 +400,9 @@ namespace FlightSim
 
         public override bool RotorGovernor2Active => false;
 
-        public override double Nav1DmeDistanceNm => Tools.DistanceTo(Latitude, Longitude, WaypointLatitude, WaypointLongitude, 'N');
+        public override double Nav1DmeDistanceNm => Tools.DistanceTo(Latitude, Longitude, WaypointLatitude, WaypointLongitude, DistanceUnit.NauticalMiles);
 
-        public override double Nav2DmeDistanceNm => Tools.DistanceTo(Latitude, Longitude, 35.3931, -97.6007, 'N');
+        public override double Nav2DmeDistanceNm => Tools.DistanceTo(Latitude, Longitude, 35.3931, -97.6007, DistanceUnit.NauticalMiles);
 
         public override double Nav1DmeSpeedKts => 180;
 

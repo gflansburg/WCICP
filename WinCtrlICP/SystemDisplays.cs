@@ -38,8 +38,8 @@ namespace WinCtrlICP
                 new() { X = 5,  Y = 4, Kind = IcpItemKind.BoundField, AttributeName = "HeadingMagneticDegrees" },
 
                 // ── XPDR ──────────────────────────────
-                new() { X = 14,  Y = 4, Kind = IcpItemKind.Label,      LabelText = "DTK" },
-                new() { X = 18,  Y = 4, Kind = IcpItemKind.BoundField, AttributeName = "GPSRequiredMagneticHeadingDegrees" },
+                new() { X = 15,  Y = 4, Kind = IcpItemKind.Label,      LabelText = "VS" },
+                new() { X = 18,  Y = 4, Kind = IcpItemKind.BoundField, AttributeName = "VerticalSpeed" },
             };
 
         public static readonly List<UserIcpDisplayItem> NAV1 =

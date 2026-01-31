@@ -603,29 +603,43 @@ namespace FlightSim
             return (brg + 360.0) % 360.0;
         }
 
-        public static double DistanceTo(double lat1, double lon1, double lat2, double lon2, char unit = 'E')
+        public static double DistanceTo(double lat1, double lon1, double lat2, double lon2, DistanceUnit unit = DistanceUnit.Meters)
         {
-            double rlat1 = Math.PI * lat1 / 180;
-            double rlat2 = Math.PI * lat2 / 180;
-            double theta = lon1 - lon2;
-            double rtheta = Math.PI * theta / 180;
-            double dist = Math.Sin(rlat1) * Math.Sin(rlat2) + Math.Cos(rlat1) * Math.Cos(rlat2) * Math.Cos(rtheta);
+            // Optional fast path (exact equality)
+            if (lat1 == lat2 && lon1 == lon2)
+                return 0.0;
 
-            dist = Math.Acos(dist);
-            dist = dist * 180 / Math.PI;
-            dist = dist * 60 * 1.1515;
+            double rlat1 = Math.PI * lat1 / 180.0;
+            double rlat2 = Math.PI * lat2 / 180.0;
+            double rtheta = Math.PI * (lon1 - lon2) / 180.0;
+
+            // This is cos(centralAngle)
+            double cosc = Math.Sin(rlat1) * Math.Sin(rlat2) + Math.Cos(rlat1) * Math.Cos(rlat2) * Math.Cos(rtheta);
+
+            // Clamp to [-1, 1] so Acos never NaNs from tiny drift
+            if (cosc > 1.0) cosc = 1.0;
+            else if (cosc < -1.0) cosc = -1.0;
+
+            double dist = Math.Acos(cosc);     // radians
+            dist = dist * 180.0 / Math.PI;     // degrees
+            dist = dist * 60.0 * 1.1515;       // miles (your original approximation)
+
             switch (unit)
             {
-                case 'E': //Meters
-                    return dist * 1000.609344;
-                case 'K': //Kilometers
+                case DistanceUnit.Meters:
+                    return dist * 1609.344;        // FIXED
+                case DistanceUnit.Kilometers:
                     return dist * 1.609344;
-                case 'N': //Nautical Miles 
-                    return dist * 0.8684;
-                case 'M': //Miles
+                case DistanceUnit.NauticalMiles:
+                    return dist * 0.868976;        // slightly better than 0.8684
+                case DistanceUnit.Feet:
+                    return dist * 5280.0;
+                case DistanceUnit.Yards:
+                    return dist * 1760.0;
+                case DistanceUnit.Miles:
+                default:
                     return dist;
             }
-            return dist;
         }
 
         public static uint Bcd2Dec(uint num)
