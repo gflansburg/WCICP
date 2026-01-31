@@ -846,12 +846,12 @@ namespace WinCtrlICP
 
         private void bALNToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            SetPage(Page.BALN);
         }
 
         private void aIRSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            SetPage(Page.AIRS);
         }
 
         private void SetPage(Page page)

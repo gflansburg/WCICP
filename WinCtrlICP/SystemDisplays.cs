@@ -552,10 +552,6 @@ namespace WinCtrlICP
                 new() { X = 5,  Y = 3, Kind = IcpItemKind.BoundField, AttributeName = "BalloonBurnerFuelFlowRate" },
                 new() { X = 13, Y = 3, Kind = IcpItemKind.Label,      LabelText = "PILT" },
                 new() { X = 18, Y = 3, Kind = IcpItemKind.BoundField, AttributeName = "BalloonBurnerPilotLightOn" },
-
-                // ── ROW 4: Temp (with units) ──────────────────────────
-                new() { X = 0,  Y = 4, Kind = IcpItemKind.Label,      LabelText = "TEMP" },
-                new() { X = 5,  Y = 4, Kind = IcpItemKind.BoundField, AttributeName = "BalloonGasTemperatureDisplay" },
             };
 
         // ─────────────────────────────────────────────────────────────
