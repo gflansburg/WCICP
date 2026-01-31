@@ -597,6 +597,40 @@ namespace FlightSim
 
         public override bool FlightPlanApproachIsWaypointRunway => Convert.ToBoolean(FlightData.FLIGHTPLAN_APPROACH_IS_WAYPOINT_RUNWAY);
 
+        public override bool BalloonAutoFillActive => Convert.ToBoolean(FlightData.BALLOON_AUTO_FILL_ACTIVE);
+
+        public override double BalloonFillAmountPercent => FlightData.BALLOON_FILL_AMOUNT;
+
+        public override double BalloonGasDensity => FlightData.BALLOON_GAS_DENSITY;
+
+        public override double BalloonGasTemperatureCelsius => FlightData.BALLOON_GAS_TEMPERATURE;
+
+        public override double BalloonVentOpenPercent => FlightData.BALLOON_VENT_OPEN_VALUE;
+
+        public override double BalloonBurnerFuelFlowRatePounds => FlightData.BURNER_FUEL_FLOW_RATE;
+
+        public override bool BalloonBurnerPilotLightOn => Convert.ToBoolean(FlightData.BURNER_PILOT_LIGHT_ON);
+
+        public override double BalloonBurnerValveOpenPercent => FlightData.BURNER_VALVE_OPEN_VALUE;
+
+        public override AirshipGasType AirshipCompartmentGasType => Enum.IsDefined(typeof(AirshipGasType), FlightData.AIRSHIP_COMPARTMENT_GAS_TYPE) ? (AirshipGasType)FlightData.AIRSHIP_COMPARTMENT_GAS_TYPE: AirshipGasType.Other;
+
+        public override double AirshipCompartmentPressureHectoPascals => FlightData.AIRSHIP_COMPARTMENT_PRESSURE;
+
+        public override double AirshipCompartmentOverPressureHectoPascals => FlightData.AIRSHIP_COMPARTMENT_OVERPRESSURE;
+
+        public override double AirshipCompartmentTemperatureCelsius => FlightData.AIRSHIP_COMPARTMENT_TEMPERATURE;
+
+        public override double AirshipCompartmentVolumeCubicMeters => FlightData.AIRSHIP_COMPARTMENT_VOLUME;
+
+        public override double AirshipCompartmentWeightPounds => FlightData.AIRSHIP_COMPARTMENT_WEIGHT;
+
+        public override double AirshipFanPowerPercent => FlightData.AIRSHIP_FAN_POWER_PCT;
+
+        public override bool AirshipMastTruckDeployment => Convert.ToBoolean(FlightData.MAST_TRUCK_DEPLOYMENT);
+
+        public override double AirshipMastTruckExtensionPercent => FlightData.MAST_TRUCK_EXTENSION;
+
         protected AbortableTaskRunner? _timerConnection = null;
         private bool _stop = false;
 

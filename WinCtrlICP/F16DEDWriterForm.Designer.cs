@@ -73,6 +73,8 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             notifyIcon1 = new NotifyIcon(components);
             timer1 = new System.Windows.Forms.Timer(components);
+            bALNToolStripMenuItem = new ToolStripMenuItem();
+            aIRSToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             menuStrip1.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
@@ -197,7 +199,7 @@
             // 
             // viewToolStripMenuItem
             // 
-            viewToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cNIToolStripMenuItem, cOM1ToolStripMenuItem, cOM2ToolStripMenuItem, iFFToolStripMenuItem, nAV1ToolStripMenuItem, nAV2ToolStripMenuItem, gPSToolStripMenuItem, fLPNToolStripMenuItem, aPToolStripMenuItem, sWCHToolStripMenuItem, lGHTToolStripMenuItem, wXToolStripMenuItem, tIMEToolStripMenuItem, iNFOToolStripMenuItem, HROTToolStripMenuItem, HDISToolStripMenuItem, HCTLToolStripMenuItem, customToolStripMenuItem });
+            viewToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { cNIToolStripMenuItem, cOM1ToolStripMenuItem, cOM2ToolStripMenuItem, iFFToolStripMenuItem, nAV1ToolStripMenuItem, nAV2ToolStripMenuItem, gPSToolStripMenuItem, fLPNToolStripMenuItem, aPToolStripMenuItem, sWCHToolStripMenuItem, lGHTToolStripMenuItem, wXToolStripMenuItem, tIMEToolStripMenuItem, iNFOToolStripMenuItem, HROTToolStripMenuItem, HDISToolStripMenuItem, HCTLToolStripMenuItem, bALNToolStripMenuItem, aIRSToolStripMenuItem, customToolStripMenuItem });
             viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             viewToolStripMenuItem.Size = new Size(44, 20);
             viewToolStripMenuItem.Text = "&View";
@@ -269,7 +271,7 @@
             // 
             sWCHToolStripMenuItem.Name = "sWCHToolStripMenuItem";
             sWCHToolStripMenuItem.Size = new Size(180, 22);
-            sWCHToolStripMenuItem.Text = "&SWCH";
+            sWCHToolStripMenuItem.Text = "S&WCH";
             sWCHToolStripMenuItem.Click += sWCHToolStripMenuItem_Click;
             // 
             // lGHTToolStripMenuItem
@@ -283,7 +285,7 @@
             // 
             wXToolStripMenuItem.Name = "wXToolStripMenuItem";
             wXToolStripMenuItem.Size = new Size(180, 22);
-            wXToolStripMenuItem.Text = "&WX";
+            wXToolStripMenuItem.Text = "W&X";
             wXToolStripMenuItem.Click += wXToolStripMenuItem_Click;
             // 
             // tIMEToolStripMenuItem
@@ -390,6 +392,20 @@
             timer1.Interval = 1000;
             timer1.Tick += timer1_Tick;
             // 
+            // bALNToolStripMenuItem
+            // 
+            bALNToolStripMenuItem.Name = "bALNToolStripMenuItem";
+            bALNToolStripMenuItem.Size = new Size(180, 22);
+            bALNToolStripMenuItem.Text = "&BALN";
+            bALNToolStripMenuItem.Click += bALNToolStripMenuItem_Click;
+            // 
+            // aIRSToolStripMenuItem
+            // 
+            aIRSToolStripMenuItem.Name = "aIRSToolStripMenuItem";
+            aIRSToolStripMenuItem.Size = new Size(180, 22);
+            aIRSToolStripMenuItem.Text = "AIR&S";
+            aIRSToolStripMenuItem.Click += aIRSToolStripMenuItem_Click;
+            // 
             // F16DEDWriterForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -461,6 +477,8 @@
         private ToolStripMenuItem nAV2ToolStripMenuItem;
         private ToolStripMenuItem gPSToolStripMenuItem;
         private ToolStripMenuItem fLPNToolStripMenuItem;
+        private ToolStripMenuItem bALNToolStripMenuItem;
+        private ToolStripMenuItem aIRSToolStripMenuItem;
     }
 }
 

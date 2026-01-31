@@ -53,6 +53,8 @@ namespace WinCtrlICP
             form.HROTBinding = GetBinding(btnHROT);
             form.HDISBinding = GetBinding(btnHDIS);
             form.HCTLBinding = GetBinding(btnHCTL);
+            form.BALNBinding = GetBinding(btnBALN);
+            form.AIRSBinding = GetBinding(btnAIRS);
             form.CycleSystemUpBinding = GetBinding(btnCycleSystemUp);
             form.CycleSystemDownBinding = GetBinding(btnCycleSystemDown);
             form.CycleCustomUpBinding = GetBinding(btnCycleCustomUp);
@@ -197,6 +199,16 @@ namespace WinCtrlICP
             ToggleCaptureBinding(btnHCTL, lblHCTL);
         }
 
+        private void btnBALN_Click(object sender, EventArgs e)
+        {
+            ToggleCaptureBinding(btnBALN, lblBALN);
+        }
+
+        private void btnAIRS_Click(object sender, EventArgs e)
+        {
+            ToggleCaptureBinding(btnAIRS, lblAIRS);
+        }
+
         private void btnCycleSystemUp_Click(object sender, EventArgs e)
         {
             ToggleCaptureBinding(btnCycleSystemUp, lblCycleSystemUp);
@@ -251,6 +263,8 @@ namespace WinCtrlICP
             btnHROT.Tag = F16DEDWriterForm.Instance.HROTBinding;
             btnHDIS.Tag = F16DEDWriterForm.Instance.HDISBinding;
             btnHCTL.Tag = F16DEDWriterForm.Instance.HCTLBinding;
+            btnBALN.Tag = F16DEDWriterForm.Instance.BALNBinding;
+            btnAIRS.Tag = F16DEDWriterForm.Instance.AIRSBinding;
             btnCycleSystemUp.Tag = F16DEDWriterForm.Instance.CycleSystemUpBinding;
             btnCycleSystemDown.Tag = F16DEDWriterForm.Instance.CycleSystemDownBinding;
             btnCycleCustomUp.Tag = F16DEDWriterForm.Instance.CycleCustomUpBinding;
@@ -275,6 +289,8 @@ namespace WinCtrlICP
             SetButtonText(btnHROT);
             SetButtonText(btnHDIS);
             SetButtonText(btnHCTL);
+            SetButtonText(btnBALN);
+            SetButtonText(btnAIRS);
             SetButtonText(btnCycleSystemUp);
             SetButtonText(btnCycleSystemDown);
             SetButtonText(btnCycleCustomUp);
@@ -299,6 +315,8 @@ namespace WinCtrlICP
             lblHROT.Text = F16DEDWriterForm.Instance.HROTBinding?.ToString();
             lblHDIS.Text = F16DEDWriterForm.Instance.HDISBinding?.ToString();
             lblHCTL.Text = F16DEDWriterForm.Instance.HCTLBinding?.ToString();
+            lblBALN.Text = F16DEDWriterForm.Instance.BALNBinding?.ToString();
+            lblAIRS.Text = F16DEDWriterForm.Instance.AIRSBinding?.ToString();
             lblCycleSystemUp.Text = F16DEDWriterForm.Instance.CycleSystemUpBinding?.ToString();
             lblCycleSystemDown.Text = F16DEDWriterForm.Instance.CycleSystemDownBinding?.ToString();
             lblCycleCustomUp.Text = F16DEDWriterForm.Instance.CycleCustomUpBinding?.ToString();
@@ -410,6 +428,14 @@ namespace WinCtrlICP
             {
                 return SystemButton.HCTL.ToString().SplitTitleCase();
             }
+            if (Equals(button, btnBALN))
+            {
+                return SystemButton.BALN.ToString().SplitTitleCase();
+            }
+            if (Equals(button, btnAIRS))
+            {
+                return SystemButton.AIRS.ToString().SplitTitleCase();
+            }
             if (Equals(button, btnCycleSystemUp))
             {
                 return SystemButton.CycleSystemUp.ToString().SplitTitleCase();
@@ -507,6 +533,14 @@ namespace WinCtrlICP
             {
                 return SystemButton.HCTL;
             }
+            if (binding.Equals(F16DEDWriterForm.Instance.BALNBinding) && _activeButton != btnBALN)
+            {
+                return SystemButton.BALN;
+            }
+            if (binding.Equals(F16DEDWriterForm.Instance.AIRSBinding) && _activeButton != btnAIRS)
+            {
+                return SystemButton.AIRS;
+            }
             if (binding.Equals(F16DEDWriterForm.Instance.CycleSystemUpBinding) && _activeButton != btnCycleSystemUp)
             {
                 return SystemButton.CycleSystemUp;
@@ -591,6 +625,8 @@ namespace WinCtrlICP
                                 SystemButton.HROT => () => F16DEDWriterForm.Instance.HROTBinding = null,
                                 SystemButton.HDIS => () => F16DEDWriterForm.Instance.HDISBinding = null,
                                 SystemButton.HCTL => () => F16DEDWriterForm.Instance.HCTLBinding = null,
+                                SystemButton.BALN => () => F16DEDWriterForm.Instance.BALNBinding = null,
+                                SystemButton.AIRS => () => F16DEDWriterForm.Instance.AIRSBinding = null,
                                 SystemButton.CycleSystemUp => () => F16DEDWriterForm.Instance.CycleSystemUpBinding = null,
                                 SystemButton.CycleSystemDown => () => F16DEDWriterForm.Instance.CycleSystemDownBinding = null,
                                 SystemButton.CycleCustomUp => () => F16DEDWriterForm.Instance.CycleCustomUpBinding = null,
@@ -609,7 +645,7 @@ namespace WinCtrlICP
                         F16DEDWriterForm.Instance.CaptureJoystickEvents = true;
                     }
                 }
-             });
+            });
         }
     }
 }

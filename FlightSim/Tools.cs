@@ -517,11 +517,17 @@ namespace FlightSim
         public static double FeetToMeters(double ft) => ft * 0.3048;
         public static double MetersToFeet(double m) => m / 0.3048;
 
+        public static double PoundsToKilograms(double lbs) => lbs * 0.45359237;
+        public static double KilogramsToPounds(double kg) => kg / 0.45359237;
+
         public static double KnotsToKph(double kts) => kts * 1.852;
         public static double KnotsToMph(double kts) => kts * 1.150779;
 
         public static double CelsiusToFahrenheit(double c) => (c * 9.0 / 5.0) + 32.0;
         public static double FahrenheitToCelsius(double f) => (f - 32.0) * 5.0 / 9.0;
+
+        public static double CubicMetersToCubicFeet(double m3) => m3 * 35.3146667215;
+        public static double CubicFeetToCubicMeters(double ft3) => ft3 / 35.3146667215;
 
         public static double MetersToNm(double m) => m / 1852.0;
         public static double MetersToKm(double m) => m / 1000.0;

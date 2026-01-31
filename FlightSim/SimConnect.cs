@@ -294,6 +294,27 @@ namespace FlightSim
             public int FLIGHTPLAN_APPROACH_IS_WAYPOINT_RUNWAY;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
             public string FLIGHTPLAN_APPROACH_ID;
+            // Balloons
+            public int BALLOON_AUTO_FILL_ACTIVE;          // BALLOON AUTO FILL ACTIVE (bool)
+            public double BALLOON_FILL_AMOUNT;            // BALLOON FILL AMOUNT (percent)
+            public double BALLOON_GAS_DENSITY;            // BALLOON GAS DENSITY
+            public double BALLOON_GAS_TEMPERATURE;        // BALLOON GAS TEMPERATURE
+            public double BALLOON_VENT_OPEN_VALUE;        // BALLOON VENT OPEN VALUE (percent)
+            // Burners (indexed in SimVar; typically use :0 or “index 0” binding)
+            public double BURNER_FUEL_FLOW_RATE;          // BURNER FUEL FLOW RATE (lbs/hour)
+            public int BURNER_PILOT_LIGHT_ON;             // BURNER PILOT LIGHT ON (bool)
+            public double BURNER_VALVE_OPEN_VALUE;        // BURNER VALVE OPEN VALUE (percent)
+            // Airships (these are indexed compartments/fans; bind to :0)
+            public int AIRSHIP_COMPARTMENT_GAS_TYPE;      // AIRSHIP COMPARTMENT GAS TYPE (enum/int)
+            public double AIRSHIP_COMPARTMENT_PRESSURE;   // AIRSHIP COMPARTMENT PRESSURE (mb)
+            public double AIRSHIP_COMPARTMENT_OVERPRESSURE; // AIRSHIP COMPARTMENT OVERPRESSURE (mb)
+            public double AIRSHIP_COMPARTMENT_TEMPERATURE;  // AIRSHIP COMPARTMENT TEMPERATURE (C)
+            public double AIRSHIP_COMPARTMENT_VOLUME;     // AIRSHIP COMPARTMENT VOLUME (m^3)
+            public double AIRSHIP_COMPARTMENT_WEIGHT;     // AIRSHIP COMPARTMENT WEIGHT (lb)
+            public double AIRSHIP_FAN_POWER_PCT;          // AIRSHIP FAN POWER PCT (percent)
+            // Mast truck
+            public int MAST_TRUCK_DEPLOYMENT;             // MAST TRUCK DEPLOYMENT (bool)
+            public double MAST_TRUCK_EXTENSION;           // MAST TRUCK EXTENSION (percent)
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
@@ -1262,6 +1283,27 @@ namespace FlightSim
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GPS APPROACH WP INDEX", "number", SIMCONNECT_DATATYPE.INT32);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GPS APPROACH IS WP RUNWAY", "bool", SIMCONNECT_DATATYPE.INT32);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GPS APPROACH AIRPORT ID", null, SIMCONNECT_DATATYPE.STRING256);
+                        // Balloons
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BALLOON AUTO FILL ACTIVE", "bool", SIMCONNECT_DATATYPE.INT32);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BALLOON FILL AMOUNT", "percent", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BALLOON GAS DENSITY", "kilograms per cubic meter", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BALLOON GAS TEMPERATURE", "celsius", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BALLOON VENT OPEN VALUE", "percent", SIMCONNECT_DATATYPE.FLOAT64);
+                        // Burners (use index 0)
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BURNER FUEL FLOW RATE:0", "pounds per hour", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BURNER PILOT LIGHT ON:0", "bool", SIMCONNECT_DATATYPE.INT32);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BURNER VALVE OPEN VALUE:0", "percent", SIMCONNECT_DATATYPE.FLOAT64);
+                        // Airships (compartment 0 / fan 0)
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AIRSHIP COMPARTMENT GAS TYPE:0", "enum", SIMCONNECT_DATATYPE.INT32);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AIRSHIP COMPARTMENT PRESSURE:0", "millibars", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AIRSHIP COMPARTMENT OVERPRESSURE:0", "millibars", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AIRSHIP COMPARTMENT TEMPERATURE:0", "celsius", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AIRSHIP COMPARTMENT VOLUME:0", "cubic meters", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AIRSHIP COMPARTMENT WEIGHT:0", "pounds", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AIRSHIP FAN POWER PCT:0", "percent", SIMCONNECT_DATATYPE.FLOAT64);
+                        // Mast truck
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "MAST TRUCK DEPLOYMENT", "bool", SIMCONNECT_DATATYPE.INT32);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "MAST TRUCK EXTENSION", "percent", SIMCONNECT_DATATYPE.FLOAT64);
 
                         MicrosoftSimConnect.RegisterDataDefineStruct<FLIGHT_DATA>(DATA_DEFINE_ID.FLIGHTDATA);
 

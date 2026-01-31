@@ -99,6 +99,12 @@
             btnKollsman = new Button();
             lblKollsman = new Label();
             label24 = new Label();
+            btnBALN = new Button();
+            lblBALN = new Label();
+            label25 = new Label();
+            btnAIRS = new Button();
+            lblAIRS = new Label();
+            label27 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -134,7 +140,7 @@
             // btnOK
             // 
             btnOK.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnOK.Location = new Point(414, 678);
+            btnOK.Location = new Point(414, 737);
             btnOK.Name = "btnOK";
             btnOK.Size = new Size(75, 23);
             btnOK.TabIndex = 27;
@@ -145,7 +151,7 @@
             // btnCancel
             // 
             btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnCancel.Location = new Point(333, 678);
+            btnCancel.Location = new Point(333, 737);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(75, 23);
             btnCancel.TabIndex = 28;
@@ -276,7 +282,7 @@
             // btnCycleSystemUp
             // 
             btnCycleSystemUp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnCycleSystemUp.Location = new Point(414, 504);
+            btnCycleSystemUp.Location = new Point(416, 562);
             btnCycleSystemUp.Name = "btnCycleSystemUp";
             btnCycleSystemUp.Size = new Size(75, 23);
             btnCycleSystemUp.TabIndex = 43;
@@ -288,7 +294,7 @@
             // 
             lblCycleSystemUp.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblCycleSystemUp.BorderStyle = BorderStyle.FixedSingle;
-            lblCycleSystemUp.Location = new Point(136, 504);
+            lblCycleSystemUp.Location = new Point(138, 562);
             lblCycleSystemUp.Name = "lblCycleSystemUp";
             lblCycleSystemUp.Size = new Size(272, 23);
             lblCycleSystemUp.TabIndex = 42;
@@ -297,7 +303,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(32, 508);
+            label7.Location = new Point(34, 566);
             label7.Name = "label7";
             label7.Size = new Size(98, 15);
             label7.TabIndex = 41;
@@ -306,7 +312,7 @@
             // btnCycleSystemDown
             // 
             btnCycleSystemDown.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnCycleSystemDown.Location = new Point(414, 533);
+            btnCycleSystemDown.Location = new Point(416, 591);
             btnCycleSystemDown.Name = "btnCycleSystemDown";
             btnCycleSystemDown.Size = new Size(75, 23);
             btnCycleSystemDown.TabIndex = 46;
@@ -318,7 +324,7 @@
             // 
             lblCycleSystemDown.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblCycleSystemDown.BorderStyle = BorderStyle.FixedSingle;
-            lblCycleSystemDown.Location = new Point(136, 533);
+            lblCycleSystemDown.Location = new Point(138, 591);
             lblCycleSystemDown.Name = "lblCycleSystemDown";
             lblCycleSystemDown.Size = new Size(272, 23);
             lblCycleSystemDown.TabIndex = 45;
@@ -327,7 +333,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(16, 537);
+            label8.Location = new Point(18, 595);
             label8.Name = "label8";
             label8.Size = new Size(114, 15);
             label8.TabIndex = 44;
@@ -336,7 +342,7 @@
             // btnCycleCustomUp
             // 
             btnCycleCustomUp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnCycleCustomUp.Location = new Point(414, 562);
+            btnCycleCustomUp.Location = new Point(416, 620);
             btnCycleCustomUp.Name = "btnCycleCustomUp";
             btnCycleCustomUp.Size = new Size(75, 23);
             btnCycleCustomUp.TabIndex = 49;
@@ -348,7 +354,7 @@
             // 
             lblCycleCustomUp.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblCycleCustomUp.BorderStyle = BorderStyle.FixedSingle;
-            lblCycleCustomUp.Location = new Point(136, 562);
+            lblCycleCustomUp.Location = new Point(138, 620);
             lblCycleCustomUp.Name = "lblCycleCustomUp";
             lblCycleCustomUp.Size = new Size(272, 23);
             lblCycleCustomUp.TabIndex = 48;
@@ -357,7 +363,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(28, 566);
+            label9.Location = new Point(30, 624);
             label9.Name = "label9";
             label9.Size = new Size(102, 15);
             label9.TabIndex = 47;
@@ -366,7 +372,7 @@
             // btnCycleCustomDown
             // 
             btnCycleCustomDown.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnCycleCustomDown.Location = new Point(414, 591);
+            btnCycleCustomDown.Location = new Point(416, 649);
             btnCycleCustomDown.Name = "btnCycleCustomDown";
             btnCycleCustomDown.Size = new Size(75, 23);
             btnCycleCustomDown.TabIndex = 52;
@@ -378,7 +384,7 @@
             // 
             lblCycleCustomDown.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblCycleCustomDown.BorderStyle = BorderStyle.FixedSingle;
-            lblCycleCustomDown.Location = new Point(136, 591);
+            lblCycleCustomDown.Location = new Point(138, 649);
             lblCycleCustomDown.Name = "lblCycleCustomDown";
             lblCycleCustomDown.Size = new Size(272, 23);
             lblCycleCustomDown.TabIndex = 51;
@@ -387,7 +393,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(12, 595);
+            label10.Location = new Point(14, 653);
             label10.Name = "label10";
             label10.Size = new Size(118, 15);
             label10.TabIndex = 50;
@@ -726,7 +732,7 @@
             // btnBUG
             // 
             btnBUG.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBUG.Location = new Point(414, 620);
+            btnBUG.Location = new Point(416, 678);
             btnBUG.Name = "btnBUG";
             btnBUG.Size = new Size(75, 23);
             btnBUG.TabIndex = 88;
@@ -738,7 +744,7 @@
             // 
             lblBUG.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblBUG.BorderStyle = BorderStyle.FixedSingle;
-            lblBUG.Location = new Point(136, 620);
+            lblBUG.Location = new Point(138, 678);
             lblBUG.Name = "lblBUG";
             lblBUG.Size = new Size(272, 23);
             lblBUG.TabIndex = 87;
@@ -747,7 +753,7 @@
             // label22
             // 
             label22.AutoSize = true;
-            label22.Location = new Point(25, 624);
+            label22.Location = new Point(27, 682);
             label22.Name = "label22";
             label22.Size = new Size(107, 15);
             label22.TabIndex = 86;
@@ -786,7 +792,7 @@
             // btnKollsman
             // 
             btnKollsman.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnKollsman.Location = new Point(414, 649);
+            btnKollsman.Location = new Point(416, 707);
             btnKollsman.Name = "btnKollsman";
             btnKollsman.Size = new Size(75, 23);
             btnKollsman.TabIndex = 94;
@@ -798,7 +804,7 @@
             // 
             lblKollsman.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblKollsman.BorderStyle = BorderStyle.FixedSingle;
-            lblKollsman.Location = new Point(138, 648);
+            lblKollsman.Location = new Point(140, 706);
             lblKollsman.Name = "lblKollsman";
             lblKollsman.Size = new Size(272, 23);
             lblKollsman.TabIndex = 93;
@@ -807,11 +813,71 @@
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new Point(43, 652);
+            label24.Location = new Point(45, 710);
             label24.Name = "label24";
             label24.Size = new Size(87, 15);
             label24.TabIndex = 92;
             label24.Text = "Sync Kollsman:";
+            // 
+            // btnBALN
+            // 
+            btnBALN.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBALN.Location = new Point(416, 504);
+            btnBALN.Name = "btnBALN";
+            btnBALN.Size = new Size(75, 23);
+            btnBALN.TabIndex = 97;
+            btnBALN.Text = "&Bind";
+            btnBALN.UseVisualStyleBackColor = true;
+            btnBALN.Click += btnBALN_Click;
+            // 
+            // lblBALN
+            // 
+            lblBALN.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblBALN.BorderStyle = BorderStyle.FixedSingle;
+            lblBALN.Location = new Point(138, 504);
+            lblBALN.Name = "lblBALN";
+            lblBALN.Size = new Size(272, 23);
+            lblBALN.TabIndex = 96;
+            lblBALN.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Location = new Point(92, 508);
+            label25.Name = "label25";
+            label25.Size = new Size(40, 15);
+            label25.TabIndex = 95;
+            label25.Text = "BALN:";
+            // 
+            // btnAIRS
+            // 
+            btnAIRS.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAIRS.Location = new Point(416, 533);
+            btnAIRS.Name = "btnAIRS";
+            btnAIRS.Size = new Size(75, 23);
+            btnAIRS.TabIndex = 100;
+            btnAIRS.Text = "&Bind";
+            btnAIRS.UseVisualStyleBackColor = true;
+            btnAIRS.Click += btnAIRS_Click;
+            // 
+            // lblAIRS
+            // 
+            lblAIRS.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblAIRS.BorderStyle = BorderStyle.FixedSingle;
+            lblAIRS.Location = new Point(138, 533);
+            lblAIRS.Name = "lblAIRS";
+            lblAIRS.Size = new Size(272, 23);
+            lblAIRS.TabIndex = 99;
+            lblAIRS.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new Point(98, 537);
+            label27.Name = "label27";
+            label27.Size = new Size(34, 15);
+            label27.TabIndex = 98;
+            label27.Text = "AIRS:";
             // 
             // BindingsForm
             // 
@@ -819,7 +885,13 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(499, 710);
+            ClientSize = new Size(499, 769);
+            Controls.Add(btnAIRS);
+            Controls.Add(lblAIRS);
+            Controls.Add(label27);
+            Controls.Add(btnBALN);
+            Controls.Add(lblBALN);
+            Controls.Add(label25);
             Controls.Add(btnKollsman);
             Controls.Add(lblKollsman);
             Controls.Add(label24);
@@ -977,5 +1049,11 @@
         private Button btnKollsman;
         private Label lblKollsman;
         private Label label24;
+        private Button btnBALN;
+        private Label lblBALN;
+        private Label label25;
+        private Button btnAIRS;
+        private Label lblAIRS;
+        private Label label27;
     }
 }

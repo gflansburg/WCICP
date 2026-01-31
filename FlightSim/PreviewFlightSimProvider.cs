@@ -436,6 +436,40 @@ namespace FlightSim
 
         public override bool FlightPlanApproachIsWaypointRunway => true;
 
+        public override bool BalloonAutoFillActive => false;
+
+        public override double BalloonFillAmountPercent => 0d;
+
+        public override double BalloonGasDensity => 0d;
+
+        public override double BalloonGasTemperatureCelsius => 0d;
+
+        public override double BalloonVentOpenPercent => 0d;
+
+        public override double BalloonBurnerFuelFlowRatePounds => 0d;
+
+        public override bool BalloonBurnerPilotLightOn => false;
+
+        public override double BalloonBurnerValveOpenPercent => 0d;
+
+        public override AirshipGasType AirshipCompartmentGasType => AirshipGasType.Other;
+
+        public override double AirshipCompartmentPressureHectoPascals => 0d;
+
+        public override double AirshipCompartmentOverPressureHectoPascals => 0d;
+
+        public override double AirshipCompartmentTemperatureCelsius => 0d;
+
+        public override double AirshipCompartmentVolumeCubicMeters => 0d;
+
+        public override double AirshipCompartmentWeightPounds => 0d;
+
+        public override double AirshipFanPowerPercent => 0d;
+
+        public override bool AirshipMastTruckDeployment => false;
+
+        public override double AirshipMastTruckExtensionPercent => 0d;
+
         static PreviewFlightSimProvider()
         {
             Instance = new PreviewFlightSimProvider();

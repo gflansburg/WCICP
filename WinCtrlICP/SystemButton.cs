@@ -24,6 +24,8 @@ namespace WinCtrlICP
         HROT,
         HDIS,
         HCTL,
+        BALN,
+        AIRS,
         CycleSystemUp,
         CycleSystemDown,
         CycleCustomUp,

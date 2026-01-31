@@ -13,7 +13,7 @@ namespace WinCtrlICP
         private const string MSFSKEY = "WinCtrl IPC";
 
         private string[] waiting = { string.Empty, "         WAITING", "           TO", "         CONNECT", string.Empty };
- 
+
         private bool _handleInitialized;
 
         private List<UserIcpDisplay> UserIcpDisplays { get; set; } = new List<UserIcpDisplay>();
@@ -509,6 +509,12 @@ namespace WinCtrlICP
                 case Page.HCTL:
                     SetLines(UserIcpDisplay.BuildIcpLines(sender, SystemDisplays.HCTL));
                     break;
+                case Page.BALN:
+                    SetLines(UserIcpDisplay.BuildIcpLines(sender, SystemDisplays.BALN));
+                    break;
+                case Page.AIRS:
+                    SetLines(UserIcpDisplay.BuildIcpLines(sender, SystemDisplays.AIRS));
+                    break;
                 case Page.Custom:
                     {
                         UserIcpDisplay? userIcpDisplay = UserIcpDisplays.FirstOrDefault(i => i.Id == Properties.Settings.Default.CustomDisplayId);
@@ -725,6 +731,8 @@ namespace WinCtrlICP
             HROTToolStripMenuItem.Checked = ActivePage == Page.HROT;
             HDISToolStripMenuItem.Checked = ActivePage == Page.HDIS;
             HCTLToolStripMenuItem.Checked = ActivePage == Page.HCTL;
+            bALNToolStripMenuItem.Checked = ActivePage == Page.BALN;
+            aIRSToolStripMenuItem.Checked = ActivePage == Page.AIRS;
             aviationUSICAOToolStripMenuItem.Checked = Properties.Settings.Default.UnitSystem == 0;
             metricSIToolStripMenuItem.Checked = Properties.Settings.Default.UnitSystem != 0;
             foreach (ToolStripItem item in customToolStripMenuItem.DropDownItems)
@@ -834,6 +842,16 @@ namespace WinCtrlICP
         private void HCTLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetPage(Page.HCTL);
+        }
+
+        private void bALNToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aIRSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void SetPage(Page page)
@@ -1306,6 +1324,46 @@ namespace WinCtrlICP
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public JoystickBinding? BALNBinding
+        {
+            get
+            {
+                return (!string.IsNullOrEmpty(Properties.Settings.Default.BALNBinding) ? JsonConvert.DeserializeObject<JoystickBinding>(Properties.Settings.Default.BALNBinding) : null);
+            }
+            set
+            {
+                if (value == null)
+                {
+                    Properties.Settings.Default.BALNBinding = null;
+                }
+                else
+                {
+                    Properties.Settings.Default.BALNBinding = JsonConvert.SerializeObject(value);
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public JoystickBinding? AIRSBinding
+        {
+            get
+            {
+                return (!string.IsNullOrEmpty(Properties.Settings.Default.AIRSBinding) ? JsonConvert.DeserializeObject<JoystickBinding>(Properties.Settings.Default.AIRSBinding) : null);
+            }
+            set
+            {
+                if (value == null)
+                {
+                    Properties.Settings.Default.AIRSBinding = null;
+                }
+                else
+                {
+                    Properties.Settings.Default.AIRSBinding = JsonConvert.SerializeObject(value);
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public JoystickBinding? CycleSystemUpBinding
         {
             get
@@ -1413,6 +1471,8 @@ namespace WinCtrlICP
             Page.HROT,
             Page.HDIS,
             Page.HCTL,
+            Page.BALN,
+            Page.AIRS,
             Page.Custom
         };
 
@@ -1563,6 +1623,14 @@ namespace WinCtrlICP
                         else if (HCTLBinding != null && IsJoystickButton(HCTLBinding, e))
                         {
                             SetPage(Page.HCTL);
+                        }
+                        else if (BALNBinding != null && IsJoystickButton(BALNBinding, e))
+                        {
+                            SetPage(Page.BALN);
+                        }
+                        else if (AIRSBinding != null && IsJoystickButton(AIRSBinding, e))
+                        {
+                            SetPage(Page.AIRS);
                         }
                         else if (CycleSystemUpBinding != null && IsJoystickButton(CycleSystemUpBinding, e))
                         {

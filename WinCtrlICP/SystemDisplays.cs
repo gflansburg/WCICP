@@ -522,5 +522,75 @@ namespace WinCtrlICP
 
             };
 
+
+        // ─────────────────────────────────────────────────────────────
+        // BALN - Balloons
+        // ─────────────────────────────────────────────────────────────
+        public static readonly List<UserIcpDisplayItem> BALN =
+            new()
+            {
+                // ── ROW 0: Auto / Fill ────────────────────────────────
+                new() { X = 0,  Y = 0, Kind = IcpItemKind.Label,      LabelText = "AUTO" },
+                new() { X = 5,  Y = 0, Kind = IcpItemKind.BoundField, AttributeName = "BalloonAutoFillActive" },
+                new() { X = 13, Y = 0, Kind = IcpItemKind.Label,      LabelText = "FILL" },
+                new() { X = 18, Y = 0, Kind = IcpItemKind.BoundField, AttributeName = "BalloonFillAmountPercent" },
+
+                // ── ROW 1: Density / Temp ─────────────────────────────
+                new() { X = 0,  Y = 1, Kind = IcpItemKind.Label,      LabelText = "DENS" },
+                new() { X = 5,  Y = 1, Kind = IcpItemKind.BoundField, AttributeName = "BalloonGasDensity" },
+                new() { X = 13, Y = 1, Kind = IcpItemKind.Label,      LabelText = "TEMP" },
+                new() { X = 18, Y = 1, Kind = IcpItemKind.BoundField, AttributeName = "BalloonGasTemperature" },
+
+                // ── ROW 2: Vent / Valve ───────────────────────────────
+                new() { X = 0,  Y = 2, Kind = IcpItemKind.Label,      LabelText = "VENT" },
+                new() { X = 5,  Y = 2, Kind = IcpItemKind.BoundField, AttributeName = "BalloonVentOpenPercent" },
+                new() { X = 13, Y = 2, Kind = IcpItemKind.Label,      LabelText = "VALV" },
+                new() { X = 18, Y = 2, Kind = IcpItemKind.BoundField, AttributeName = "BalloonBurnerValveOpenPercent" },
+
+                // ── ROW 3: Flow / Pilot ───────────────────────────────
+                new() { X = 0,  Y = 3, Kind = IcpItemKind.Label,      LabelText = "FLOW" },
+                new() { X = 5,  Y = 3, Kind = IcpItemKind.BoundField, AttributeName = "BalloonBurnerFuelFlowRate" },
+                new() { X = 13, Y = 3, Kind = IcpItemKind.Label,      LabelText = "PILT" },
+                new() { X = 18, Y = 3, Kind = IcpItemKind.BoundField, AttributeName = "BalloonBurnerPilotLightOn" },
+
+                // ── ROW 4: Temp (with units) ──────────────────────────
+                new() { X = 0,  Y = 4, Kind = IcpItemKind.Label,      LabelText = "TEMP" },
+                new() { X = 5,  Y = 4, Kind = IcpItemKind.BoundField, AttributeName = "BalloonGasTemperatureDisplay" },
+            };
+
+        // ─────────────────────────────────────────────────────────────
+        // AIRS - Airships
+        // ─────────────────────────────────────────────────────────────
+        public static readonly List<UserIcpDisplayItem> AIRS =
+            new()
+            {
+                // ── ROW 0: Gas / Fan ──────────────────────────────────
+                new() { X = 0,  Y = 0, Kind = IcpItemKind.Label,      LabelText = "GAS" },
+                new() { X = 5,  Y = 0, Kind = IcpItemKind.BoundField, AttributeName = "AirshipCompartmentGasType" },
+                new() { X = 13, Y = 0, Kind = IcpItemKind.Label,      LabelText = "FAN" },
+                new() { X = 18, Y = 0, Kind = IcpItemKind.BoundField, AttributeName = "AirshipFanPowerPercent" },
+
+                // ── ROW 1: Pressure / Over-Pressure ───────────────────
+                new() { X = 0,  Y = 1, Kind = IcpItemKind.Label,      LabelText = "PRES" },
+                new() { X = 5,  Y = 1, Kind = IcpItemKind.BoundField, AttributeName = "AirshipCompartmentPressure" },
+                new() { X = 13, Y = 1, Kind = IcpItemKind.Label,      LabelText = "OPRS" },
+                new() { X = 18, Y = 1, Kind = IcpItemKind.BoundField, AttributeName = "AirshipCompartmentOverPressure" },
+
+                // ── ROW 2: Temp / Volume ──────────────────────────────
+                new() { X = 0,  Y = 2, Kind = IcpItemKind.Label,      LabelText = "TEMP" },
+                new() { X = 5,  Y = 2, Kind = IcpItemKind.BoundField, AttributeName = "AirshipCompartmentTemperature" },
+                new() { X = 13, Y = 2, Kind = IcpItemKind.Label,      LabelText = "VOL" },
+                new() { X = 18, Y = 2, Kind = IcpItemKind.BoundField, AttributeName = "AirshipCompartmentVolume" },
+
+                // ── ROW 3: Weight / Mast Deploy ───────────────────────
+                new() { X = 0,  Y = 3, Kind = IcpItemKind.Label,      LabelText = "WGHT" },
+                new() { X = 5,  Y = 3, Kind = IcpItemKind.BoundField, AttributeName = "AirshipCompartmentWeight" },
+                new() { X = 13, Y = 3, Kind = IcpItemKind.Label,      LabelText = "MAST" },
+                new() { X = 18, Y = 3, Kind = IcpItemKind.BoundField, AttributeName = "AirshipMastTruckDeployment" },
+
+                // ── ROW 4: Mast Extension ─────────────────────────────
+                new() { X = 0,  Y = 4, Kind = IcpItemKind.Label,      LabelText = "EXT" },
+                new() { X = 5,  Y = 4, Kind = IcpItemKind.BoundField, AttributeName = "AirshipMastTruckExtensionPercent" },
+            };
     }
 }

@@ -311,8 +311,17 @@ namespace FlightSim
         [FlightSimField("Temperature Scale", MaxLength = 1, PadAlign = FieldPadAlign.Left)]
         public string TemperatureScaleDisplay => Units == UnitSystem.Aviation ? "F" : "C";
 
-        [FlightSimField("Volume Scale", MaxLength = 1, PadAlign = FieldPadAlign.Left)]
+        [FlightSimField("Volume Scale", MaxLength = 3, PadAlign = FieldPadAlign.Left)]
         public string VolumeScaleDisplay => Units == UnitSystem.Aviation ? "GAL" : "L";
+
+        [FlightSimField("Flow Rate Scale", MaxLength = 5, PadAlign = FieldPadAlign.Left)]
+        public string FlowRateScaleDisplay => Units == UnitSystem.Aviation ? "LB/HR" : "KG/HR";
+
+        [FlightSimField("Cubic Volume Scale", MaxLength = 3, PadAlign = FieldPadAlign.Left)]
+        public string CubicVolumeScaleDisplay => Units == UnitSystem.Aviation ? "FT3" : "M3";
+
+        [FlightSimField("Weight Scale", MaxLength = 2, PadAlign = FieldPadAlign.Left)]
+        public string WeightScaleDisplay => Units == UnitSystem.Aviation ? "LB" : "KG";
 
         [FlightSimField("Pressure Scale", MaxLength = 4, PadAlign = FieldPadAlign.Left)]
         public string PressureScaleDisplay => Units == UnitSystem.Aviation ? "INHG" : "HPA";
@@ -1608,6 +1617,123 @@ namespace FlightSim
         [FlightSimField("Flight Plan: Approach Waypoint Is Runway", MaxLength = 3, TrueText = "YES", FalseText = "NO")]
         public abstract bool FlightPlanApproachIsWaypointRunway { get; }
 
+        // Balloons
+        [FlightSimField("Balloon: Autofill Active", MaxLength = 3, TrueText = "YES", FalseText = "NO")]
+        public abstract bool BalloonAutoFillActive { get; }
+
+        [FlightSimField("Balloon: Fill Amount (pct)", MaxLength = 4, Format = "0%", PadAlign = FieldPadAlign.Left)]
+        public abstract double BalloonFillAmountPercent { get; }
+
+        [FlightSimField("Balloon: Gas Density (kg per cubic meter)", MaxLength = 5, Format = "000.0")]
+        public abstract double BalloonGasDensity { get; }
+
+        [FlightSimField("Balloon: Gas Temperature (°C)", MaxLength = 4, Format = "0°")]
+        public abstract double BalloonGasTemperatureCelsius { get; }
+
+        [FlightSimField("Balloon: Gas Temperature (°F)", MaxLength = 4, Format = "0°")]
+        public virtual double BalloonGasTemperatureFahrenheit => Tools.CelsiusToFahrenheit(BalloonGasTemperatureCelsius);
+
+        [FlightSimField("Balloon: Gas Temperature (sys)", MaxLength = 4, Format = "0°", PadAlign = FieldPadAlign.Left)]
+        public virtual double BalloonGasTemperature => Units == UnitSystem.Metric ? BalloonGasTemperatureCelsius : BalloonGasTemperatureFahrenheit;
+
+        [FlightSimField("Balloon: Gas Temperature (display)", MaxLength = 6, PadAlign = FieldPadAlign.Left)]
+        public virtual string BalloonGasTemperatureDisplay => BalloonGasTemperature.ToString("0°", CultureInfo.InvariantCulture) + " " + TemperatureScaleDisplay;
+
+        [FlightSimField("Balloon: Vent Open (pct)", MaxLength = 4, Format = "0%", PadAlign = FieldPadAlign.Left)]
+        public abstract double BalloonVentOpenPercent { get; }
+
+        [FlightSimField("Balloon: Burner Fuel Flow Rate (lb/hr)", MaxLength = 4, Format = "0000")]
+        public abstract double BalloonBurnerFuelFlowRatePounds { get; }
+
+        [FlightSimField("Balloon: Burner Fuel Flow Rate (kg/hr)", MaxLength = 4, Format = "0000")]
+        public virtual double BalloonBurnerFuelFlowRateKilograms => Tools.PoundsToKilograms(BalloonBurnerFuelFlowRatePounds);
+
+        [FlightSimField("Balloon: Burner Fuel Flow Rate (sys)", MaxLength = 4, Format = "0000")]
+        public virtual double BalloonBurnerFuelFlowRate => Units == UnitSystem.Metric ? BalloonBurnerFuelFlowRateKilograms : BalloonBurnerFuelFlowRatePounds;
+
+        [FlightSimField("Balloon: Burner Fuel Flow Rate (disp)", MaxLength = 10, PadAlign = FieldPadAlign.Left)]
+        public virtual string BalloonBurnerFuelFlowRateDisplay => BalloonBurnerFuelFlowRate.ToString("0", CultureInfo.InvariantCulture) + " " + FlowRateScaleDisplay;
+
+        [FlightSimField("Balloon: Burner Pilot Light On", MaxLength = 3, TrueText = "YES", FalseText = "NO")]
+        public abstract bool BalloonBurnerPilotLightOn { get; }
+
+        [FlightSimField("Balloon: Burner Valve Open (pct)", MaxLength = 4, Format = "0%", PadAlign = FieldPadAlign.Left)]
+        public abstract double BalloonBurnerValveOpenPercent { get; }
+
+        // Airships
+        [FlightSimField("Airship: Compartment Gas Type", MaxLength = 8, PadAlign = FieldPadAlign.Left)]
+        public abstract AirshipGasType AirshipCompartmentGasType { get; }
+
+        [FlightSimField("Airship: Compartment Pressure (hPa)", Format = "0000", MaxLength = 4)]
+        public abstract double AirshipCompartmentPressureHectoPascals { get; }
+
+        [FlightSimField("Airship: Compartment Pressure (inHg)", Format = "00.00", MaxLength = 5)]
+        public virtual double AirshipCompartmentPressureInchesMercury => Tools.HectoPascalsToInchesMercury(AirshipCompartmentPressureHectoPascals);
+
+        [FlightSimField("Airship: Compartment Pressure (sys)", MaxLength = 5)]
+        public virtual double AirshipCompartmentPressure => Units == UnitSystem.Metric ? AirshipCompartmentPressureHectoPascals : AirshipCompartmentPressureInchesMercury;
+
+        [FlightSimField("Airship: Compartment Pressure (disp)", MaxLength = 10, PadAlign = FieldPadAlign.Left)]
+        public virtual string AirshipCompartmentPressureDisplay => AirshipCompartmentPressure.ToString(Units == UnitSystem.Metric ? "0" : "00.00", CultureInfo.InvariantCulture) + " " + PressureScaleDisplay;
+
+        [FlightSimField("Airship: Compartment Over Pressure (hPa)", Format = "0000", MaxLength = 4)]
+        public abstract double AirshipCompartmentOverPressureHectoPascals { get; }
+
+        [FlightSimField("Airship: Compartment Over Pressure (inHg)", Format = "00.00", MaxLength = 5)]
+        public virtual double AirshipCompartmentOverPressureInchesMercury => Tools.HectoPascalsToInchesMercury(AirshipCompartmentOverPressureHectoPascals);
+
+        [FlightSimField("Airship: Compartment Over Pressure (sys)", MaxLength = 5)]
+        public virtual double AirshipCompartmentOverPressure => Units == UnitSystem.Metric ? AirshipCompartmentOverPressureHectoPascals : AirshipCompartmentOverPressureInchesMercury;
+
+        [FlightSimField("Airship: Compartment Over Pressure (disp)", MaxLength = 10, PadAlign = FieldPadAlign.Left)]
+        public virtual string AirshipCompartmentOverPressureDisplay => AirshipCompartmentOverPressure.ToString(Units == UnitSystem.Metric ? "0" : "00.00", CultureInfo.InvariantCulture) + " " + PressureScaleDisplay;
+        
+        [FlightSimField("Airship: Compartment Temperature (°C)", MaxLength = 4, Format = "0°")]
+        public abstract double AirshipCompartmentTemperatureCelsius { get; }
+
+        [FlightSimField("Airship: Compartment Temperature (°F)", MaxLength = 4, Format = "0°")]
+        public virtual double AirshipCompartmentTemperatureFahrenheit => Tools.CelsiusToFahrenheit(AirshipCompartmentTemperatureCelsius);
+
+        [FlightSimField("Airship: Compartment Temperature (sys)", MaxLength = 4, Format = "0°", PadAlign = FieldPadAlign.Left)]
+        public virtual double AirshipCompartmentTemperature => Units == UnitSystem.Metric ? AirshipCompartmentTemperatureCelsius : AirshipCompartmentTemperatureFahrenheit;
+
+        [FlightSimField("Airship: Compartment Temperature (display)", MaxLength = 6, PadAlign = FieldPadAlign.Left)]
+        public virtual string AirshipCompartmentTemperatureDisplay => AirshipCompartmentTemperature.ToString("0°", CultureInfo.InvariantCulture) + " " + TemperatureScaleDisplay;
+
+        [FlightSimField("Airship: Compartment Volume (m³)", MaxLength = 4, Format = "0000")]
+        public abstract double AirshipCompartmentVolumeCubicMeters { get; }
+
+        [FlightSimField("Airship: Compartment Volume (ft³)", MaxLength = 4, Format = "0000")]
+        public virtual double AirshipCompartmentVolumeCubicFeet => Tools.CubicMetersToCubicFeet(AirshipCompartmentVolumeCubicMeters);
+
+        [FlightSimField("Airship: Compartment Volume (sys)", MaxLength = 4, Format = "0000")]
+        public virtual double AirshipCompartmentVolume => Units == UnitSystem.Metric ? AirshipCompartmentVolumeCubicMeters : AirshipCompartmentVolumeCubicFeet;
+
+        [FlightSimField("Airship: Compartment Volume (display)", MaxLength = 8)]
+        public virtual string AirshipCompartmentVolumeDisplay => AirshipCompartmentVolume.ToString("0", CultureInfo.InvariantCulture) + " " + CubicVolumeScaleDisplay;
+
+        [FlightSimField("Airship: Compartment Weight (lbs)", MaxLength = 5, Format = "00000")]
+        public abstract double AirshipCompartmentWeightPounds { get; }
+
+        [FlightSimField("Airship: Compartment Weight (kg)", MaxLength = 5, Format = "00000")]
+        public virtual double AirshipCompartmentWeightKilograms => Tools.PoundsToKilograms(AirshipCompartmentWeightPounds);
+
+        [FlightSimField("Airship: Compartment Weight (sys)", MaxLength = 5, Format = "00000")]
+        public virtual double AirshipCompartmentWeight => Units == UnitSystem.Metric ? AirshipCompartmentWeightKilograms : AirshipCompartmentWeightPounds;
+
+        [FlightSimField("Airship: Compartment Weight (display)", MaxLength = 8, PadAlign = FieldPadAlign.Left)]
+        public virtual string AirshipCompartmentWeightDisplay => AirshipCompartmentWeight.ToString("0", CultureInfo.InvariantCulture) + " " + WeightScaleDisplay;
+
+        [FlightSimField("Airship: Fan Power (pct)", MaxLength = 4, Format = "0%", PadAlign = FieldPadAlign.Left)]
+        public abstract double AirshipFanPowerPercent { get; }
+
+        // Mast truck
+        [FlightSimField("Airship: Mast Truck Deployment", MaxLength = 3, TrueText = "YES", FalseText = "NO")]
+        public abstract bool AirshipMastTruckDeployment { get; }
+
+        [FlightSimField("Airship: Mast Truck Extension (pct)", MaxLength = 4, Format = "0%", PadAlign = FieldPadAlign.Left)]
+        public abstract double AirshipMastTruckExtensionPercent { get; }
+
         protected bool AllByEngine(bool e1, bool e2, bool e3, bool e4)
         {
             int n = EngineCount;
@@ -1904,6 +2030,8 @@ namespace FlightSim
             }
             if ((prop.Name == nameof(Kollsman)
                 || prop.Name == nameof(SecondaryKollsman)
+                || prop.Name == nameof(AirshipCompartmentPressure)
+                || prop.Name == nameof(AirshipCompartmentOverPressure)
                 || prop.Name == nameof(Pressure))
                 && rawValue is double psr)
             {

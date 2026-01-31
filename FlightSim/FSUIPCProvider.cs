@@ -39,6 +39,40 @@ namespace FlightSim
             }
         }
 
+        public override bool BalloonAutoFillActive => FlightSimProviders.SimConnect.BalloonAutoFillActive;
+
+        public override double BalloonFillAmountPercent => FlightSimProviders.SimConnect.BalloonFillAmountPercent;
+
+        public override double BalloonGasDensity => FlightSimProviders.SimConnect.BalloonGasDensity;
+
+        public override double BalloonGasTemperatureCelsius => FlightSimProviders.SimConnect.BalloonGasTemperatureCelsius;
+
+        public override double BalloonVentOpenPercent => FlightSimProviders.SimConnect.BalloonVentOpenPercent;
+
+        public override double BalloonBurnerFuelFlowRatePounds => FlightSimProviders.SimConnect.BalloonBurnerFuelFlowRatePounds;
+
+        public override bool BalloonBurnerPilotLightOn => FlightSimProviders.SimConnect.BalloonBurnerPilotLightOn;
+
+        public override double BalloonBurnerValveOpenPercent => FlightSimProviders.SimConnect.BalloonBurnerValveOpenPercent;
+
+        public override AirshipGasType AirshipCompartmentGasType => FlightSimProviders.SimConnect.AirshipCompartmentGasType;
+
+        public override double AirshipCompartmentPressureHectoPascals => FlightSimProviders.SimConnect.AirshipCompartmentPressureHectoPascals;
+
+        public override double AirshipCompartmentOverPressureHectoPascals => FlightSimProviders.SimConnect.AirshipCompartmentOverPressureHectoPascals;
+
+        public override double AirshipCompartmentTemperatureCelsius => FlightSimProviders.SimConnect.AirshipCompartmentTemperatureCelsius;
+
+        public override double AirshipCompartmentVolumeCubicMeters => FlightSimProviders.SimConnect.AirshipCompartmentVolumeCubicMeters;
+
+        public override double AirshipCompartmentWeightPounds => FlightSimProviders.SimConnect.AirshipCompartmentWeightPounds;
+
+        public override double AirshipFanPowerPercent => FlightSimProviders.SimConnect.AirshipFanPowerPercent;
+
+        public override bool AirshipMastTruckDeployment => FlightSimProviders.SimConnect.AirshipMastTruckDeployment;
+
+        public override double AirshipMastTruckExtensionPercent => FlightSimProviders.SimConnect.AirshipMastTruckExtensionPercent;
+
         public override string Nav1ActiveFrequencyIdent => vor1Ident.Value?.Trim('\0', ' ') ?? string.Empty;
 
         public override string Nav2ActiveFrequencyIdent => vor2Ident.Value?.Trim('\0', ' ') ?? string.Empty;

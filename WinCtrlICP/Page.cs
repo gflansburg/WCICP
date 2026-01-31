@@ -23,6 +23,8 @@ namespace WinCtrlICP
         HROT,
         HDIS,
         HCTL,
+        BALN,
+        AIRS,
         Custom
     }
 }

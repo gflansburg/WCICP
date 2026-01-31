@@ -418,5 +418,29 @@ namespace WinCtrlICP.Properties {
                 this["KollsmanBinding"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BALNBinding {
+            get {
+                return ((string)(this["BALNBinding"]));
+            }
+            set {
+                this["BALNBinding"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AIRSBinding {
+            get {
+                return ((string)(this["AIRSBinding"]));
+            }
+            set {
+                this["AIRSBinding"] = value;
+            }
+        }
     }
 }

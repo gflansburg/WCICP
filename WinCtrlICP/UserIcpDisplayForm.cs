@@ -644,6 +644,14 @@ namespace WinCtrlICP
             {
                 return SystemButton.HCTL;
             }
+            if (binding.Equals(F16DEDWriterForm.Instance.BALNBinding))
+            {
+                return SystemButton.BALN;
+            }
+            if (binding.Equals(F16DEDWriterForm.Instance.AIRSBinding))
+            {
+                return SystemButton.AIRS;
+            }
             if (binding.Equals(F16DEDWriterForm.Instance.CycleSystemUpBinding))
             {
                 return SystemButton.CycleSystemUp;
@@ -763,6 +771,12 @@ namespace WinCtrlICP
                                         break;
                                     case SystemButton.HCTL:
                                         F16DEDWriterForm.Instance.HCTLBinding = null;
+                                        break;
+                                    case SystemButton.BALN:
+                                        F16DEDWriterForm.Instance.BALNBinding = null;
+                                        break;
+                                    case SystemButton.AIRS:
+                                        F16DEDWriterForm.Instance.AIRSBinding = null;
                                         break;
                                     case SystemButton.CycleSystemUp:
                                         F16DEDWriterForm.Instance.CycleSystemUpBinding = null;
