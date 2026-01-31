@@ -695,10 +695,10 @@ namespace FlightSim
         [FlightSimField("Waypoint Longitude", MaxLength = 14)]
         public abstract double WaypointLongitude { get; }
 
-        [FlightSimField("Waypoint Latitude (short)", MaxLength = 9)]
+        [FlightSimField("Waypoint Latitude (short)", MaxLength = 9, PadAlign = FieldPadAlign.Left)]
         public virtual string WaypointLatitudeShort => new Latitude(WaypointLatitude).ToShortString();
 
-        [FlightSimField("Waypoint Longitude (short)", MaxLength = 9)]
+        [FlightSimField("Waypoint Longitude (short)", MaxLength = 9, PadAlign = FieldPadAlign.Left)]
         public virtual string WaypointLongitudeShort => new Longitude(WaypointLongitude).ToShortString();
 
         [FlightSimField("Active Waypoint", MaxLength = 3, TrueText = "ACT", FalseText = "")]
@@ -837,10 +837,10 @@ namespace FlightSim
             SchedulePositionRefresh();
         }
 
-        [FlightSimField("Latitude (short)", MaxLength = 9)]
+        [FlightSimField("Latitude (short)", MaxLength = 9, PadAlign = FieldPadAlign.Left)]
         public virtual string LatitudeShort => new Latitude(Latitude).ToShortString();
 
-        [FlightSimField("Longitude (short)", MaxLength = 9)]
+        [FlightSimField("Longitude (short)", MaxLength = 9, PadAlign = FieldPadAlign.Left)]
         public virtual string LongitudeShort => new Longitude(Longitude).ToShortString();
 
         private double _latitude;
