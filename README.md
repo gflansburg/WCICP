@@ -2,9 +2,9 @@
 
 ## Overview
 
-This application provides a **fallback ICP display** for the **WinWing ICP controller**, delivering useful avionics data in **Microsoft Flight Simulator (MSFS)** and **X-Plane** when aircraft are **not officially supported** by WinWing.
+This application provides a **fallback ICP display** for the **WinWing/WinCtrl ICP controller**, delivering useful avionics data in **Microsoft Flight Simulator (MSFS)** and **X-Plane** when aircraft are **not officially supported** by WinWing.
 
-Many aircraft expose rich avionics data through SimConnect, FSUIPC, or X-Plane datarefs but display **no information at all** on the WinWing ICP unless explicitly supported by SimAppPro.  
+Many aircraft expose rich avionics data through SimConnect, FSUIPC, or X-Plane datarefs but display **no information at all** on the WinWing/WinCtrl ICP unless explicitly supported by SimAppPro.  
 This project fills that gap by presenting a **common, aircraft-agnostic ICP display** that works across *all* aircraft.
 
 **SimAppPro is not required.**
@@ -15,9 +15,9 @@ This project fills that gap by presenting a **common, aircraft-agnostic ICP disp
 
 The goal of this application is simple:
 
-> Ensure the WinWing ICP always shows meaningful information.
+> Ensure the WinWing/WinCtrl ICP always shows meaningful information.
 
-Rather than relying on aircraft-specific integrations, the app exposes a **Common Instrument Information (CNI)** display and related pages that every aircraft can support.
+Rather than relying on aircraft-specific integrations, the app exposes a **Common Navigation Information (CNI)** display and related pages that every aircraft can support.
 
 ---
 
