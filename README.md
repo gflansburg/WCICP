@@ -17,7 +17,7 @@ The goal of this application is simple:
 
 > Ensure the WinWing/WinCtrl ICP always shows meaningful information.
 
-Rather than relying on aircraft-specific integrations, the app exposes a** Common Navigation Information (CNI)** display and related pages—an aircraft-agnostic abstraction inspired by, but not limited to, the F-16’s Communications, Navigation, and Identification concept—that every aircraft can support.
+Rather than relying on aircraft-specific integrations, the app exposes a **Common Navigation Information (CNI)** display and related pages—an aircraft-agnostic abstraction inspired by, but not limited to, the F-16’s Communications, Navigation, and Identification concept—that every aircraft can support.
 
 ---
 
