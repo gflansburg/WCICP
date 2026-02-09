@@ -121,6 +121,7 @@ namespace FlightSim
         // Gear
         private double _gearAvgDeploy;
         private bool _gearHandleDown;
+        private double[] _gearRatio;
 
         // Fuel totals
         private double _fuelRemainingGallons;
@@ -260,6 +261,23 @@ namespace FlightSim
         // For torque percent calc (need both to compute percent)
         private readonly double[] _drivTrqNm = new double[2];
         private readonly double[] _maxTrqNm = new double[2];
+
+        private static GearState GearFromRatio(double v)
+        {
+            if (v <= 0.01d)
+                return GearState.Up;
+
+            if (v >= 0.99d)
+                return GearState.Down;
+
+            return GearState.Transit;
+        }
+
+        public override GearState NoseGearState => GearFromRatio(_gearRatio[0]);
+
+        public override GearState LeftGearState => GearFromRatio(_gearRatio[1]);
+
+        public override GearState RightGearState => GearFromRatio(_gearRatio[2]);
 
         public override GearState GearState
         {
@@ -876,6 +894,7 @@ namespace FlightSim
 
             for (int i = 0; i < count; i++)
             {
+                int idx = i;
                 // clone with Index set (don’t mutate the shared DataRefList instance)
                 var dr = new DataRefElement
                 {
@@ -887,10 +906,10 @@ namespace FlightSim
                     Id = baseDr.Id,
                     Writable = baseDr.Writable,
                     DataType = baseDr.DataType,
-                    Index = i
+                    Index = idx
                 };
 
-                connector.Subscribe(dr, Frequency, (element, value) => set(i, value));
+                connector.Subscribe(dr, Frequency, (element, value) => set(idx, value));
             }
         }
 
@@ -1458,6 +1477,11 @@ namespace FlightSim
             {
                 _gearHandleDown = value > 0.5f;
             });
+
+            SubscribeEngineArray(DataRefId.Flightmodel2GearDeployRatio, (i, v) =>
+            {
+                if (i < 3) _gearRatio[i] = v;
+            }, 3);
 
             // If you later want a better average, store an array and average all gear legs.
             // For now, index 0 is “good enough” for a simple Up/Down/Transit presentation.

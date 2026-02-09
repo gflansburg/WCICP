@@ -1092,6 +1092,12 @@ namespace FlightSim
 
         public abstract GearState GearState { get; }
 
+        public abstract GearState NoseGearState { get; }
+
+        public abstract GearState LeftGearState { get; }
+
+        public abstract GearState RightGearState { get; }
+
         [FlightSimField("Spoilers (pct)", MaxLength = 4, Format = "0%", PadAlign = FieldPadAlign.Left)]
         public abstract double SpoilersPercent { get; }
 
@@ -1121,6 +1127,30 @@ namespace FlightSim
 
         [FlightSimField("Gear", MaxLength = 3, PadAlign = FieldPadAlign.Left)]
         public virtual string GearDisplay => GearState switch
+        {
+            GearState.Up => "UP",
+            GearState.Down => "DN",
+            _ => "MOV"
+        };
+
+        [FlightSimField("Gear (nose)", MaxLength = 3, PadAlign = FieldPadAlign.Left)]
+        public virtual string NoseGearDisplay => NoseGearState switch
+        {
+            GearState.Up => "UP",
+            GearState.Down => "DN",
+            _ => "MOV"
+        };
+
+        [FlightSimField("Gear (left)", MaxLength = 3, PadAlign = FieldPadAlign.Left)]
+        public virtual string LeftGearDisplay => LeftGearState switch
+        {
+            GearState.Up => "UP",
+            GearState.Down => "DN",
+            _ => "MOV"
+        };
+
+        [FlightSimField("Gear (right)", MaxLength = 3, PadAlign = FieldPadAlign.Left)]
+        public virtual string RightGearDisplay => RightGearState switch
         {
             GearState.Up => "UP",
             GearState.Down => "DN",

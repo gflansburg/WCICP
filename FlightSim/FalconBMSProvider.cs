@@ -112,15 +112,39 @@ namespace FlightSim
 
         public override double FlapsPercent => Math.Clamp(_lastFlightData.tefPos, 0.0f, 1.0f) * 100.0;
 
+        private static GearState FromGearPos(float pos)
+        {
+            if (pos >= 0.95f) return GearState.Down;
+            if (pos <= 0.05f) return GearState.Up;
+            return GearState.Transit;
+        }
+
+        public override GearState NoseGearState => FromGearPos(_lastFlightData.NoseGearPos);
+        public override GearState LeftGearState => FromGearPos(_lastFlightData.LeftGearPos);
+        public override GearState RightGearState => FromGearPos(_lastFlightData.RightGearPos);
+
+        public bool NoseGearDown => NoseGearState == GearState.Down;
+        public bool LeftGearDown => LeftGearState == GearState.Down;
+        public bool RightGearDown => RightGearState == GearState.Down;
+
         public override GearState GearState
         {
             get
             {
-                bool down = (_lastFlightData.gearPos >= 0.99f);
-                bool up = (_lastFlightData.gearPos <= 0.01f);
+                // Prefer per-wheel states when BMS provides them
+                var nose = NoseGearState;
+                var left = LeftGearState;
+                var right = RightGearState;
 
-                if (down) return GearState.Down;
-                if (up) return GearState.Up;
+                // All three down => Down
+                if (nose == GearState.Down && left == GearState.Down && right == GearState.Down)
+                    return GearState.Down;
+
+                // All three up => Up
+                if (nose == GearState.Up && left == GearState.Up && right == GearState.Up)
+                    return GearState.Up;
+
+                // Otherwise transit (covers mixed states too)
                 return GearState.Transit;
             }
         }
@@ -615,15 +639,17 @@ namespace FlightSim
                     ReadyToFly(newReady);
             }
 
-            // Aircraft change detection should also be based on the same snapshot
-            var newAircraftName = GetAircraftName(data.vehicleACD) ?? string.Empty;
-            if (!prevAircraftName.Equals(newAircraftName, StringComparison.OrdinalIgnoreCase) &&
-                !newAircraftName.Equals("Unknown Aircraft", StringComparison.OrdinalIgnoreCase))
+            if (connected)
             {
-                LoadAircraft(newAircraftName);
+                // Aircraft change detection should also be based on the same snapshot
+                var newAircraftName = GetAircraftName(data.vehicleACD) ?? string.Empty;
+                if (!prevAircraftName.Equals(newAircraftName, StringComparison.OrdinalIgnoreCase) &&
+                    !newAircraftName.Equals("Unknown Aircraft", StringComparison.OrdinalIgnoreCase))
+                {
+                    LoadAircraft(newAircraftName);
+                }
+                FlightDataReceived();
             }
-
-            FlightDataReceived();
         }
 
         private void LoadAircraft(string? aircraftName)

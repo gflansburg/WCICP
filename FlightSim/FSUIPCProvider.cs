@@ -163,6 +163,54 @@ namespace FlightSim
             }
         }
 
+        public override GearState NoseGearState
+        {
+            get
+            {
+                float v = noseGearControl.Value;
+
+                if (v <= 0.01f)
+                    return GearState.Up;
+
+                if (v >= 0.99f)
+                    return GearState.Down;
+
+                return GearState.Transit;
+            }
+        }
+
+        public override GearState RightGearState
+        {
+            get
+            {
+                float v = rightGearControl.Value;
+
+                if (v <= 0.01f)
+                    return GearState.Up;
+
+                if (v >= 0.99f)
+                    return GearState.Down;
+
+                return GearState.Transit;
+            }
+        }
+
+        public override GearState LeftGearState
+        {
+            get
+            {
+                float v = leftGearControl.Value;
+
+                if (v <= 0.01f)
+                    return GearState.Up;
+
+                if (v >= 0.99f)
+                    return GearState.Down;
+
+                return GearState.Transit;
+            }
+        }
+
         public override double SpoilersPercent => Math.Clamp(spoilersPercent.Value, 0d, 16383d) / 16383d * 100d;
 
         public override bool SpoilersArmed => spoilersArmed.Value != 0;
@@ -1513,7 +1561,11 @@ namespace FlightSim
         private Offset<int> apAltTargetFt = new Offset<int>(0x07D4);
         private Offset<short> apSpdTargetKts = new Offset<short>(0x07E2);
         private Offset<byte> propDeice = new Offset<byte>(0x337C);
-        private Offset<float> gearControl = new Offset<float>(0x0BE8);
+        private Offset<int> gearControl = new Offset<int>(0x0BE8);
+        private Offset<int> noseGearControl = new Offset<int>(0x0BEC);
+        private Offset<int> rightGearControl = new Offset<int>(0x0BF0);
+        private Offset<int> leftGearControl = new Offset<int>(0x0BF4);
+
         private Offset<byte> fuelPump = new Offset<byte>(0x3125);
 
         private Offset<int> nav1ObsAvailable = new Offset<int>(0x07AC);

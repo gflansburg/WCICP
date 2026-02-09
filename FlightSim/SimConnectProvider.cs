@@ -139,6 +139,45 @@ namespace FlightSim
                 return GearState.Transit;
             }
         }
+
+        private static GearState FromPercent(double p)
+        {
+            if (double.IsNaN(p) || double.IsInfinity(p))
+                return GearState.Transit;
+
+            if (p <= 1.0f)
+                return GearState.Up;
+
+            if (p >= 99.0f)
+                return GearState.Down;
+
+            return GearState.Transit;
+        }
+
+        public override GearState NoseGearState
+        {
+            get
+            {
+                return FromPercent(FlightData.GEAR_CENTER_POSITION);
+            }
+        }
+
+        public override GearState LeftGearState
+        {
+            get
+            {
+                return FromPercent(FlightData.GEAR_LEFT_POSITION);
+            }
+        }
+
+        public override GearState RightGearState
+        {
+            get
+            {
+                return FromPercent(FlightData.GEAR_RIGHT_POSITION);
+            }
+        }
+
         public override double SpoilersPercent => FlightData.SPOILERS_PCT;
 
         public override bool SpoilersArmed => Convert.ToBoolean(FlightData.SPOILERS_ARMED);

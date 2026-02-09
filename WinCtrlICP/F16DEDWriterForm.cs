@@ -1748,7 +1748,7 @@ namespace WinCtrlICP
             FlightSimProviders.FSUIPC.Deinitialize();
             // Event though we are not using them:
             FlightSimProviders.DCS?.Deinitialize();
-            FlightSimProviders.FalcomBMS.Deinitialize();
+            FlightSimProviders.FalconBMS.Deinitialize();
         }
 
         private void startWithMSFSToolStripMenuItem_Click(object sender, EventArgs e)

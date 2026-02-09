@@ -22,7 +22,7 @@ namespace FlightSim
 
         private IReadOnlyList<DCSCrossref> _crossref = Array.Empty<DCSCrossref>();
 
-        private string DCSWorldAircraftName { get; set; } = string.Empty;
+        public string DCSWorldAircraftName { get; private set; } = string.Empty;
         private bool DCSWorldIsHelo { get; set; }
         private EngineType DCSWorldEngineType { get; set; }
 
@@ -115,7 +115,18 @@ namespace FlightSim
 
         public override double FlapsPercent => 0d;
 
-        public override GearState GearState => GearState.Up;
+        private bool _gearInTransit = false;
+        private bool _gearDown = false;
+        public override GearState GearState => _gearInTransit ? GearState.Transit : _gearDown ? GearState.Down : GearState.Up;
+
+        private bool _noseGearDown = false;
+        public override GearState NoseGearState => _gearInTransit ? GearState.Transit : _noseGearDown ? GearState.Down : GearState.Up;
+
+        private bool _leftGearDown = false;
+        public override GearState LeftGearState => _gearInTransit ? GearState.Transit : _leftGearDown ? GearState.Down : GearState.Up;
+
+        private bool _rightGearDown = false;
+        public override GearState RightGearState => _gearInTransit ? GearState.Transit : _rightGearDown ? GearState.Down : GearState.Up;
 
         public override double SpoilersPercent => 0d;
 
@@ -515,6 +526,16 @@ namespace FlightSim
 
         private DCSBIOSOutput? DCSBIOSOutputActiveWaypoint { get; set; }
 
+        private DCSBIOSOutput? DCSBIOSOutputGearDown { get; set; }
+
+        private DCSBIOSOutput? DCSBIOSOutputNoseGearDown { get; set; }
+
+        private DCSBIOSOutput? DCSBIOSOutputLeftGearDown { get; set; }
+
+        private DCSBIOSOutput? DCSBIOSOutputRightGearDown { get; set; }
+
+        private DCSBIOSOutput? DCSBIOSOutputGearTransit { get; set; }
+
         public override double AltitudeAGLFeet => AltitudeMSLFeet;
 
         public override double AltitudeTrueFeet => AltitudeMSLFeet;
@@ -621,6 +642,11 @@ namespace FlightSim
             DCSBIOSOutputAltitudeAGL = GetDCSBIOSOutput("ALT_AGL_FT");
             DCSBIOSOutputHeadingTrue = GetDCSBIOSOutput("HDG_DEG");
             DCSBIOSOutputHeadingMag = GetDCSBIOSOutput("HDG_DEG_MAG");
+            DCSBIOSOutputGearDown = GetDCSBIOSOutput("GEAR_DOWN");
+            DCSBIOSOutputNoseGearDown = GetDCSBIOSOutput("GEAR_NOSE_DOWN");
+            DCSBIOSOutputLeftGearDown = GetDCSBIOSOutput("GEAR_LEFT_DOWN");
+            DCSBIOSOutputRightGearDown = GetDCSBIOSOutput("GEAR_RIGHT_DOWN");
+            DCSBIOSOutputGearTransit = GetDCSBIOSOutput("GEAR_TRANSIT");
             DCSBIOSOutputPilotName = GetDCSBIOSOutput("PILOTNAME");
             DCSBIOSOutputAirspeedIndicated = GetDCSBIOSOutput("IAS_US_INT");
             DCSBIOSOutputAirspeedTrue = GetDCSBIOSOutput("TAS_US_INT");
@@ -1015,6 +1041,31 @@ namespace FlightSim
                 if (DCSBIOSOutputHeadingMag?.UShortValueHasChanged(e.Address, e.Data) == true)
                 {
                     _headingMag = DCSBIOSOutputHeadingMag.GetUShortValue(e.Data);
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputGearDown?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _gearDown = Convert.ToBoolean(DCSBIOSOutputGearDown.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputNoseGearDown?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _noseGearDown = Convert.ToBoolean(DCSBIOSOutputNoseGearDown.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputLeftGearDown?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _leftGearDown = Convert.ToBoolean(DCSBIOSOutputLeftGearDown.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputRightGearDown?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _rightGearDown = Convert.ToBoolean(DCSBIOSOutputRightGearDown.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputGearTransit?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _gearInTransit = Convert.ToBoolean(DCSBIOSOutputGearTransit.GetUShortValue(e.Data));
                     isDirty = true;
                 }
                 if (DCSBIOSOutputAirspeedIndicated?.UShortValueHasChanged(e.Address, e.Data) == true)

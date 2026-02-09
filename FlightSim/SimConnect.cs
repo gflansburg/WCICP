@@ -209,6 +209,8 @@ namespace FlightSim
             public double FLAPS_PCT;
             public double GEAR_HANDLE_POSITION;
             public double GEAR_CENTER_POSITION;
+            public double GEAR_LEFT_POSITION;
+            public double GEAR_RIGHT_POSITION;
             public double SPOILERS_PCT;
             public int SPOILERS_ARMED;
             public int PARKING_BRAKE;
@@ -1197,6 +1199,8 @@ namespace FlightSim
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "FLAPS HANDLE PERCENT", "Percent", SIMCONNECT_DATATYPE.FLOAT64);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GEAR HANDLE POSITION", "Percent", SIMCONNECT_DATATYPE.FLOAT64);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GEAR CENTER POSITION", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GEAR LEFT POSITION", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GEAR LEFT POSITION", "Percent Over 100", SIMCONNECT_DATATYPE.FLOAT64);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "SPOILERS HANDLE POSITION", "Percent", SIMCONNECT_DATATYPE.FLOAT64);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "SPOILERS ARMED", "Bool", SIMCONNECT_DATATYPE.INT32);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "BRAKE PARKING POSITION", "Bool", SIMCONNECT_DATATYPE.INT32);

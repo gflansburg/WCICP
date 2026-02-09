@@ -69,6 +69,12 @@ namespace FlightSim
         
         public override GearState GearState => GearState.Up;
 
+        public override GearState NoseGearState => GearState.Up;
+
+        public override GearState LeftGearState => GearState.Up;
+
+        public override GearState RightGearState => GearState.Up;
+
         public override double FuelRemainingGallons => 42;
 
         public override double FuelCapacityGallons => 60;
