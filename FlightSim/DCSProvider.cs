@@ -128,9 +128,43 @@ namespace FlightSim
         private bool _rightGearDown = false;
         public override GearState RightGearState => _gearInTransit ? GearState.Transit : _rightGearDown ? GearState.Down : GearState.Up;
 
-        public override double SpoilersPercent => 0d;
+        private bool _rwrSearchStatus = false;
+        public bool RwrSearchStatus => _rwrSearchStatus;
 
-        public override bool SpoilersArmed => false;
+        private bool _rwrActivityStatus = false;
+        public bool RwrActivityStatus => _rwrActivityStatus;
+
+        private bool _rwrPowerStatus = false;
+        public bool RwrPowerStatus => _rwrPowerStatus;
+
+        private bool _rwrAltLowStatus = false;
+        public bool RwrAltLowStatus => _rwrAltLowStatus;
+
+        private bool _rwrAltStatus = false;
+        public bool RwrAltStatus => _rwrAltStatus;
+
+        private bool _rwrSystemPowerStatus = false;
+        public bool RwrSystemPowerStatus => _rwrSystemPowerStatus;
+
+        private bool _jfsRunStatus = false;
+        public bool JfsRunStatus => _jfsRunStatus;
+
+        private bool _mainGenStatus = false;
+        public bool MainGenStatus => _mainGenStatus;
+
+        private bool _stbyGenStatus = false;
+        public bool StbyGenStatus => _stbyGenStatus;
+
+        private bool _flcsRlyStatus = false;
+        public bool FlcsRlyStatus => _flcsRlyStatus;
+
+        private bool _epuStatus = false;
+        public bool EpuStatus => _epuStatus;
+
+        private bool _speedBrake = false;
+        public override bool SpoilersArmed => _speedBrake;
+
+        public override double SpoilersPercent => _speedBrake ? 100d : 0d;
 
         public override bool ParkingBrakeOn => false;
 
@@ -538,6 +572,30 @@ namespace FlightSim
 
         private DCSBIOSOutput? DCSBIOSOutputGearTransit { get; set; }
 
+        private DCSBIOSOutput? DCSBIOSOutputRwrSearchStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputRwrActivityStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputRwrPowerStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputRwrAltLowStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputRwrAltStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputRwrSystemPowerStatus { get; set; }
+
+        private DCSBIOSOutput? DCSBIOSOutputJfsRunStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputMainGenStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputStbyGenStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputFlcsRlyStatus { get; set; }
+        
+        private DCSBIOSOutput? DCSBIOSOutputEpuStatus { get; set; }
+
+        private DCSBIOSOutput? DCSBIOSOutputSpeedBrake { get; set; }
+
         public override double AltitudeAGLFeet => AltitudeMSLFeet;
 
         public override double AltitudeTrueFeet => AltitudeMSLFeet;
@@ -649,6 +707,18 @@ namespace FlightSim
             DCSBIOSOutputLeftGearDown = GetDCSBIOSOutput("GEAR_LEFT_DOWN");
             DCSBIOSOutputRightGearDown = GetDCSBIOSOutput("GEAR_RIGHT_DOWN");
             DCSBIOSOutputGearTransit = GetDCSBIOSOutput("GEAR_TRANSIT");
+            DCSBIOSOutputRwrSearchStatus = GetDCSBIOSOutput("LIGHT_RWR_SEARCH");
+            DCSBIOSOutputRwrActivityStatus = GetDCSBIOSOutput("LIGHT_RWR_ACTIVITY");
+            DCSBIOSOutputRwrPowerStatus = GetDCSBIOSOutput("LIGHT_RWR_POWER");
+            DCSBIOSOutputRwrAltLowStatus = GetDCSBIOSOutput("LIGHT_RWR_ALT_LOW");
+            DCSBIOSOutputRwrAltStatus = GetDCSBIOSOutput("LIGHT_RWR_ALT");
+            DCSBIOSOutputRwrSystemPowerStatus = GetDCSBIOSOutput("LIGHT_ACFT_BATT_FAIL");
+            DCSBIOSOutputJfsRunStatus = GetDCSBIOSOutput("LIGHT_JFS_RUN");
+            DCSBIOSOutputMainGenStatus = GetDCSBIOSOutput("LIGHT_MAIN_GEN");
+            DCSBIOSOutputStbyGenStatus = GetDCSBIOSOutput("LIGHT_STBY_GEN");
+            DCSBIOSOutputFlcsRlyStatus = GetDCSBIOSOutput("LIGHT_FLCS");
+            DCSBIOSOutputEpuStatus = GetDCSBIOSOutput("LIGHT_EPU");
+            DCSBIOSOutputSpeedBrake = GetDCSBIOSOutput("SPEEDBRAKE_INDICATOR");
             DCSBIOSOutputPilotName = GetDCSBIOSOutput("PILOTNAME");
             DCSBIOSOutputAirspeedIndicated = GetDCSBIOSOutput("IAS_US_INT");
             DCSBIOSOutputAirspeedTrue = GetDCSBIOSOutput("TAS_US_INT");
@@ -1068,6 +1138,66 @@ namespace FlightSim
                 if (DCSBIOSOutputGearTransit?.UShortValueHasChanged(e.Address, e.Data) == true)
                 {
                     _gearInTransit = Convert.ToBoolean(DCSBIOSOutputGearTransit.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputRwrSearchStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _rwrSearchStatus = Convert.ToBoolean(DCSBIOSOutputRwrSearchStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputRwrActivityStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _rwrActivityStatus = Convert.ToBoolean(DCSBIOSOutputRwrActivityStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputRwrPowerStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _rwrPowerStatus = Convert.ToBoolean(DCSBIOSOutputRwrPowerStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputRwrAltLowStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _rwrAltLowStatus = Convert.ToBoolean(DCSBIOSOutputRwrAltLowStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputRwrAltStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _rwrAltStatus = Convert.ToBoolean(DCSBIOSOutputRwrAltStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputRwrSystemPowerStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _rwrSystemPowerStatus = Convert.ToBoolean(DCSBIOSOutputRwrSystemPowerStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputJfsRunStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _jfsRunStatus = Convert.ToBoolean(DCSBIOSOutputJfsRunStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputMainGenStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _mainGenStatus = Convert.ToBoolean(DCSBIOSOutputMainGenStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputStbyGenStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _stbyGenStatus = Convert.ToBoolean(DCSBIOSOutputStbyGenStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputFlcsRlyStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _flcsRlyStatus = Convert.ToBoolean(DCSBIOSOutputFlcsRlyStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputEpuStatus?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _epuStatus = Convert.ToBoolean(DCSBIOSOutputEpuStatus.GetUShortValue(e.Data));
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputSpeedBrake?.UShortValueHasChanged(e.Address, e.Data) == true)
+                {
+                    _speedBrake = Convert.ToBoolean(DCSBIOSOutputSpeedBrake.GetUShortValue(e.Data));
                     isDirty = true;
                 }
                 if (DCSBIOSOutputAirspeedIndicated?.UShortValueHasChanged(e.Address, e.Data) == true)
