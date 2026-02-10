@@ -119,6 +119,12 @@ namespace FlightSim
             return GearState.Transit;
         }
 
+        static bool AnyLampOn(FlightData fd, LightBits bit)
+        {
+            uint m = (uint)bit;
+            return ((fd.lightBits & m) != 0); // LightBits lives here by definition
+        }
+
         static bool AnyLampOn(FlightData fd, LightBits2 bit)
         {
             uint m = (uint)bit;
@@ -433,6 +439,10 @@ namespace FlightSim
         public bool RwrLowLamp => AuxRwrLowLamp;
 
         public bool AuxRwrPwrLamp => AnyLampOn(_lastFlightData, LightBits2.AuxPwr);
+
+        public bool AuxRwrAltLamp => AnyLampOn(_lastFlightData, LightBits.RadarAlt);
+
+        public bool RwrBatteryFail => AnyLampOn(_lastFlightData, LightBits3.BatFail);
 
         public bool EpuRunLamp => AnyLampOn(_lastFlightData, LightBits2.EPUOn);
 
