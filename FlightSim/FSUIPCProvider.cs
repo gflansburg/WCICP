@@ -1119,6 +1119,14 @@ namespace FlightSim
             }
         }
 
+        public override double BatteryLoadAmps   
+        {
+            get
+            {
+                return batteryLoad.Value;
+            }
+        }
+
         public override bool BatteryOn
         {
             get
@@ -1483,6 +1491,7 @@ namespace FlightSim
         private Offset<int> nav2Available = new Offset<int>(0x07A4);
         private Offset<byte> radioSwitches = new Offset<byte>(0x3122);
         private Offset<int> electricalMasterBattery = new Offset<int>(0x281C);
+        private Offset<double> batteryLoad = new Offset<double>(0x282C);
         private Offset<int> avionicsMasterSwitch = new Offset<int>(0x2E80);
         private Offset<int> engineGeneratorSwitch = new Offset<int>(0x3B78);
         private Offset<byte> pitotHeatSwitch = new Offset<byte>(0x029C);

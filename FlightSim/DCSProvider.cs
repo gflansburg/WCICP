@@ -353,6 +353,8 @@ namespace FlightSim
 
         public override double AltitudeMSLFeet => _altitudeMSL;
 
+        public override double BatteryLoadAmps => 0d;
+
         public override bool BatteryOn => false;
 
         public override bool AvionicsOn => false;

@@ -277,6 +277,8 @@ namespace FlightSim
 
         public override double AdfRelativeBearing => 045;
 
+        public override double BatteryLoadAmps => -1.0d;
+
         public override bool AvionicsOn => true;
 
         public override bool BatteryOn => true;

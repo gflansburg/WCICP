@@ -983,6 +983,9 @@ namespace FlightSim
         [FlightSimField("Rudder Trim (pct)", MaxLength = 4, Format = "0%", PadAlign = FieldPadAlign.Left)]
         public abstract double RudderTrimPercent { get; }
 
+        [FlightSimField("Battery Load (amps)", MaxLength = 7, Format = "+0.0;-0.0")]
+        public abstract double BatteryLoadAmps { get; }
+
         [FlightSimField("Battery On", MaxLength = 3, TrueText = "ON", FalseText = "OFF")]
         public abstract bool BatteryOn { get; }
 

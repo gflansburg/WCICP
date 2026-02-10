@@ -119,12 +119,28 @@ namespace FlightSim
             return GearState.Transit;
         }
 
+        static bool AnyLampOn(FlightData fd, LightBits2 bit)
+        {
+            uint m = (uint)bit;
+            return ((fd.lightBits2 & m) != 0); // LightBits2 lives here by definition
+        }
+
+        static bool AnyLampOn(FlightData fd, LightBits3 bit)
+        {
+            uint m = (uint)bit;
+            return ((fd.lightBits3 & m) != 0); // LightBits3 lives here by definition
+        }
+
         public override GearState NoseGearState => FromGearPos(_lastFlightData.NoseGearPos);
+
         public override GearState LeftGearState => FromGearPos(_lastFlightData.LeftGearPos);
+
         public override GearState RightGearState => FromGearPos(_lastFlightData.RightGearPos);
 
         public bool NoseGearDown => NoseGearState == GearState.Down;
+
         public bool LeftGearDown => LeftGearState == GearState.Down;
+
         public bool RightGearDown => RightGearState == GearState.Down;
 
         public override GearState GearState
@@ -368,7 +384,138 @@ namespace FlightSim
         public override double AdfRelativeBearing => Tools.NormalizeDegrees(_lastFlightData.bearingToBeacon);
         
         public override bool AvionicsOn => (_lastFlightData.powerBits & (uint)(PowerBits.BusPowerEssential | PowerBits.MainGenerator)) != 0;
-        
+
+        public override double BatteryLoadAmps => 0d;
+
+        public (int symbol, float bearing, float lethality)? RwrTopThreat
+        {
+            get
+            {
+                int n = Math.Min(_lastFlightData.RwrObjectCount, FlightData.MAX_RWR_OBJECTS);
+                if (n <= 0) return null;
+
+                var sym = _lastFlightData.RWRsymbol;
+                var brg = _lastFlightData.bearing;
+                var leth = _lastFlightData.lethality;
+                if (sym == null || brg == null || leth == null) return null;
+
+                int bestIdx = -1;
+                float bestL = float.MinValue;
+
+                for (int i = 0; i < n && i < sym.Length && i < brg.Length && i < leth.Length; i++)
+                {
+                    if (leth[i] > bestL)
+                    {
+                        bestL = leth[i];
+                        bestIdx = i;
+                    }
+                }
+
+                if (bestIdx < 0) return null;
+                return (sym[bestIdx], brg[bestIdx], leth[bestIdx]);
+            }
+        }
+
+        public bool GearWarnLamp => AnyLampOn(_lastFlightData, LightBits2.GEARHANDLE);
+
+        public bool NoseGearLamp => AnyLampOn(_lastFlightData, LightBits3.NoseGearDown);
+
+        public bool LeftGearLamp => AnyLampOn(_lastFlightData, LightBits3.LeftGearDown);
+
+        public bool RightGearLamp => AnyLampOn(_lastFlightData, LightBits3.RightGearDown);
+
+        public bool AuxRwrSearchLamp => AnyLampOn(_lastFlightData, LightBits2.AuxSrch);
+
+        public bool AuxRwrActLamp => AnyLampOn(_lastFlightData, LightBits2.AuxAct);
+
+        public bool AuxRwrLowLamp => AnyLampOn(_lastFlightData, LightBits2.AuxLow);
+
+        public bool RwrLowLamp => AuxRwrLowLamp;
+
+        public bool AuxRwrPwrLamp => AnyLampOn(_lastFlightData, LightBits2.AuxPwr);
+
+        public bool EpuRunLamp => AnyLampOn(_lastFlightData, LightBits2.EPUOn);
+
+        public bool JfsRunLamp => AnyLampOn(_lastFlightData, LightBits2.JFSOn);
+
+
+        public EcmOperStates EcmState => _lastFlightData.ecmOper;
+
+        public bool EcmPowered => EcmState != EcmOperStates.ECM_OPER_NO_LIT;
+
+        public bool EcmTransmit => EcmState >= EcmOperStates.ECM_OPER_ACTIVE;
+
+        public bool EcmPwrLamp => AnyLampOn(_lastFlightData, LightBits2.EcmPwr);
+
+        public bool EcmFailLamp => AnyLampOn(_lastFlightData, LightBits2.EcmFail);
+
+        public bool EcmAnyLit => _lastFlightData.ecmOper != EcmOperStates.ECM_OPER_NO_LIT;
+
+        public bool EssentialPower => (_lastFlightData.powerBits & (uint)PowerBits.BusPowerEssential) != 0;
+
+        public bool RwrNewDetection => (_lastFlightData.newDetection?.Any(x => x != 0) ?? false);
+
+        public bool RwrActivityFinal => RwrActivityLatched || RwrThreatSelected || RwrThreatHigh || RwrMissileLaunch;
+
+        public bool RwrSearch => RwrPowered && (AuxRwrSearchLamp || _lastFlightData.RwrObjectCount > 0);
+
+        public bool RwrActivity => RwrPowered && (AuxRwrActLamp || RwrActivityFinal);
+
+        public bool RwrPowerLamp => AuxRwrPwrLamp || EcmPwrLamp || EcmPowered || BatteryBusPowered;
+
+        public int RwrCount => _lastFlightData.RwrObjectCount;
+
+        public bool RwrThreatHigh => (_lastFlightData.lethality?.Any(l => l >= 2.0f) ?? false);
+
+        public bool RwrMissileLaunch => (_lastFlightData.missileLaunch?.Any(x => x != 0) ?? false);
+
+        public bool RwrMissileActivity => (_lastFlightData.missileActivity?.Any(x => x != 0) ?? false);
+
+        private DateTime _rwrActivityUntilUtc = DateTime.MinValue;
+
+        public void UpdateRwrActivityLatch()
+        {
+            bool pulse =
+                (_lastFlightData.newDetection?.Any(x => x != 0) ?? false) ||
+                (_lastFlightData.missileActivity?.Any(x => x != 0) ?? false) ||
+                (_lastFlightData.missileLaunch?.Any(x => x != 0) ?? false);
+
+            if (pulse)
+                _rwrActivityUntilUtc = DateTime.UtcNow.AddMilliseconds(750);
+        }
+
+        public bool RwrActivityLatched => DateTime.UtcNow <= _rwrActivityUntilUtc;
+
+        public bool RwrThreatSelected => (_lastFlightData.selected?.Any(x => x != 0) ?? false);
+
+        public bool EcmActive => _lastFlightData.ecmOper == EcmOperStates.ECM_OPER_ACTIVE || _lastFlightData.ecmOper == EcmOperStates.ECM_OPER_ALL_LIT;
+
+        public bool EcmStandby => _lastFlightData.ecmOper == EcmOperStates.ECM_OPER_STDBY;
+
+        public bool RwrJammed => (_lastFlightData.RWRjammingStatus?.Any(s => s == JammingStates.JAMMED_YES) ?? false);
+
+        public bool MainGenOnline => (_lastFlightData.powerBits & (uint)PowerBits.MainGenerator) != 0;
+
+        public bool BatteryBusPowered => (_lastFlightData.powerBits & (uint)PowerBits.BusPowerBattery) != 0;
+
+        public bool EmergencyBusPowered => (_lastFlightData.powerBits & (uint)PowerBits.BusPowerEmergency) != 0;
+
+        public bool StandbyGenOnline => (_lastFlightData.powerBits & (uint)PowerBits.StandbyGenerator) != 0;
+
+        public bool EpuActive => BatteryBusPowered && !MainGenOnline && EmergencyBusPowered && !StandbyGenOnline;
+
+        public bool JfsRunning => (_lastFlightData.powerBits & (uint)PowerBits.JetFuelStarter) != 0;
+
+        public bool RwrPowered => BatteryBusPowered;
+
+        public bool MainGenLamp => AnyLampOn(_lastFlightData, LightBits3.MainGen);
+
+        public bool StbyGenLamp => AnyLampOn(_lastFlightData, LightBits3.StbyGen);
+
+        public bool FlcsRlyLamp => AnyLampOn(_lastFlightData, LightBits3.FlcsRly);
+
+        public bool SpeedBrakeLamp => AnyLampOn(_lastFlightData, LightBits3.SpeedBrake);
+
         public override bool BatteryOn => (_lastFlightData.powerBits & (uint)PowerBits.BusPowerBattery) != 0;
         
         public override uint Transponder => ((uint)((byte)_lastFlightData.iffTransponderActiveCode1) << 24) | ((uint)((byte)_lastFlightData.iffTransponderActiveCode2) << 16) | ((uint)((byte)_lastFlightData.iffTransponderActiveCode3A) << 8) | (byte)_lastFlightData.iffTransponderActiveCodeC;
@@ -615,6 +762,8 @@ namespace FlightSim
 
             // Update position from the same snapshot we just committed
             SetPosition(data.latitude, data.longitude);
+
+            UpdateRwrActivityLatch();
 
             // Connection edge
             if (prevConnected != _isConnected)

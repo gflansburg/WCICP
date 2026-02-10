@@ -121,7 +121,7 @@ namespace FlightSim
         // Gear
         private double _gearAvgDeploy;
         private bool _gearHandleDown;
-        private double[] _gearRatio;
+        private double[] _gearRatio = new double[3];
 
         // Fuel totals
         private double _fuelRemainingGallons;
@@ -474,6 +474,9 @@ namespace FlightSim
 
         public double _altitudeTrueFeet;
         public override double AltitudeTrueFeet => _altitudeTrueFeet;
+
+        private double _batteryLoad;
+        public override double BatteryLoadAmps => _batteryLoad;
 
         private bool _batteryOn;
         public override bool BatteryOn => _batteryOn;
@@ -1091,6 +1094,11 @@ namespace FlightSim
             connector.Subscribe(XPlaneStructs.DataRefs.DataRefList[DataRefId.Cockpit2RadiosIndicatorsTransponderId], Frequency, (element, value) =>
             {
                 _identActive = Convert.ToBoolean(value);
+            });
+
+            connector.Subscribe(XPlaneStructs.DataRefs.DataRefList[DataRefId.Cockpit2ElectricalBatteryAmps], Frequency, (element, value) =>
+            {
+                _batteryLoad = value;
             });
 
             connector.Subscribe(XPlaneStructs.DataRefs.DataRefList[DataRefId.CockpitElectricalBatteryOn], Frequency, (element, value) =>

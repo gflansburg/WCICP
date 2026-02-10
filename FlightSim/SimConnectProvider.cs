@@ -670,6 +670,8 @@ namespace FlightSim
 
         public override double AirshipMastTruckExtensionPercent => FlightData.MAST_TRUCK_EXTENSION;
 
+        public override double BatteryLoadAmps => FlightData.BATTERY_LOAD;
+
         protected AbortableTaskRunner? _timerConnection = null;
         private bool _stop = false;
 

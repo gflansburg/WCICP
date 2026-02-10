@@ -153,6 +153,7 @@ namespace FlightSim
             public int XPDR_CODE;
             public int XPDR_STATE;
             public int IDENT_ACTIVE;
+            public double BATTERY_LOAD;
             public int BATTERY_MASTER;
             public int AVIONICS_MASTER;
             public int GENERATOR_MASTER;
@@ -1143,6 +1144,7 @@ namespace FlightSim
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "TRANSPONDER CODE:1", "Bco16", SIMCONNECT_DATATYPE.INT32);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "TRANSPONDER STATE:1", "Enum", SIMCONNECT_DATATYPE.INT32);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "TRANSPONDER IDENT", "bool", SIMCONNECT_DATATYPE.INT32);
+                        AddDef(DATA_DEFINE_ID.FLIGHTDATA, "ELECTRICAL BATTERY LOAD", "Amperes", SIMCONNECT_DATATYPE.FLOAT64);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "ELECTRICAL MASTER BATTERY:1", "Bool", SIMCONNECT_DATATYPE.INT32);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "AVIONICS MASTER SWITCH:1", "Bool", SIMCONNECT_DATATYPE.INT32);
                         AddDef(DATA_DEFINE_ID.FLIGHTDATA, "GENERAL ENG MASTER ALTERNATOR:1", "Bool", SIMCONNECT_DATATYPE.INT32);
