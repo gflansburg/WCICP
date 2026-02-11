@@ -3,18 +3,17 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using FSUIPCLib = FSUIPC;
 
 namespace WinCtrlICP
 {
-    public partial class F16DEDWriterForm : Form
+    public partial class F16DEDWriterForm : FlightSimForm
     {
         private F16DedBridge bridge;
 
         private const string MSFSKEY = "WinCtrl IPC";
 
         private string[] waiting = { string.Empty, "         WAITING", "           TO", "         CONNECT", string.Empty };
-
-        private bool _handleInitialized;
 
         private List<UserIcpDisplay> UserIcpDisplays { get; set; } = new List<UserIcpDisplay>();
 
@@ -57,24 +56,6 @@ namespace WinCtrlICP
         public F16DEDWriterForm()
         {
             Instance = this;
-            FlightSimProviders.XPlane.OnFlightDataReceived += XPlane_OnFlightDataReceived;
-            FlightSimProviders.XPlane.OnConnected += XPlane_OnConnected;
-            FlightSimProviders.XPlane.OnQuit += XPlane_OnQuit;
-            FlightSimProviders.XPlane.OnReadyToFly += XPlane_OnReadyToFly;
-            FlightSimProviders.XPlane.OnAircraftChange += XPlane_OnAircraftChange;
-            FlightSimProviders.SimConnect.OnFlightDataReceived += SimConnect_OnFlightDataReceived;
-            FlightSimProviders.SimConnect.OnConnected += SimConnect_OnConnected;
-            FlightSimProviders.SimConnect.OnQuit += SimConnect_OnQuit;
-            FlightSimProviders.SimConnect.OnReadyToFly += SimConnect_OnReadyToFly;
-            FlightSimProviders.SimConnect.OnAircraftChange += SimConnect_OnAircraftChange;
-            FlightSimProviders.FSUIPC.OnFlightDataReceived += FSUIPC_OnFlightDataReceived;
-            FlightSimProviders.FSUIPC.OnConnected += FSUIPC_OnConnected;
-            FlightSimProviders.FSUIPC.OnQuit += FSUIPC_OnQuit;
-            FlightSimProviders.FSUIPC.OnReadyToFly += FSUIPC_OnReadyToFly;
-            FlightSimProviders.FSUIPC.OnAircraftChange += FSUIPC_OnAircraftChange;
-#if DEBUG
-            FlightSimProviders.Preview.OnFlightDataReceived += Preview_OnFlightDataReceived;
-#endif
             FlightSimProviderBase.Units = Properties.Settings.Default.UnitSystem == 1 ? UnitSystem.Metric : UnitSystem.Aviation;
             InitializeComponent();
             VisibleChanged += (_, __) => FlushUiIfNeeded();
@@ -86,6 +67,16 @@ namespace WinCtrlICP
             bridge.OnBridgeFatal += Bridge_OnBridgeFatal;
             TryStartBridge();
             HandleCreated += F16DEDWriterForm_HandleCreated;
+        }
+
+        protected override IEnumerable<FlightSimProviderBase> GetProviders()
+        {
+            yield return SimConnect;
+            yield return FSUIPC;
+            yield return XPlane;
+#if DEBUG
+            yield return Preview;
+#endif
         }
 
         private string Center(string text, int width)
@@ -141,46 +132,17 @@ namespace WinCtrlICP
             }
         }
 
-#if DEBUG
-        private void Preview_OnFlightDataReceived(FlightSimProviderBase sender)
+        protected override void OnAircraftChange(FlightSimProviderBase sender, int aircraftId)
         {
-            if (FlightSimProviders.SimConnect.IsConnected || FlightSimProviders.FSUIPC.IsConnected || FlightSimProviders.XPlane.IsConnected)
+            if (sender is SimConnectProvider && FSUIPC.IsConnected)
             {
                 return;
             }
-            UpdateScreen(sender);
-        }
-#endif
-
-        private void FSUIPC_OnAircraftChange(FlightSimProviderBase sender, int aircraftId)
-        {
-            UpdateScreen(sender);
-        }
-
-        private void SimConnect_OnAircraftChange(FlightSimProviderBase sender, int aircraftId)
-        {
-            UpdateScreen(sender);
-        }
-
-        private void XPlane_OnAircraftChange(FlightSimProviderBase sender, int aircraftId)
-        {
             UpdateScreen(sender);
         }
 
         private void F16DEDWriterForm_HandleCreated(object? sender, EventArgs e)
         {
-            if (_handleInitialized)
-            {
-                return;
-            }
-            _handleInitialized = true;
-            if (_simConnectInitQueued)
-            {
-                BeginInvoke(new Action(() =>
-                {
-                    FlightSimProviders.SimConnect.MainWindowHandle = Handle;
-                }));
-            }
             if (_lastRequestedLines != null)
             {
                 SetLines(_lastRequestedLines);
@@ -301,18 +263,30 @@ namespace WinCtrlICP
             }
         }
 
-        private void XPlane_OnConnected(FlightSimProviderBase sender)
+        protected override void OnConnected(FlightSimProviderBase sender)
         {
+            if (sender is SimConnectProvider && FSUIPC.IsConnected)
+            {
+                return;
+            }
             SetLines(Connected(sender));
         }
 
-        private void XPlane_OnQuit(FlightSimProviderBase sender)
+        protected override void OnQuit(FlightSimProviderBase sender)
         {
+            if (sender is SimConnectProvider && FSUIPC.IsConnected)
+            {
+                return;
+            }
             SetLines(waiting);
         }
 
-        private void XPlane_OnReadyToFly(FlightSimProviderBase sender, ReadyToFly readyToFly)
+        protected override void OnReadyToFly(FlightSimProviderBase sender, ReadyToFly readyToFly)
         {
+            if (sender is SimConnectProvider && FSUIPC.IsConnected)
+            {
+                return;
+            }
             if (readyToFly == FlightSim.ReadyToFly.Ready)
             {
                 UpdateScreen(sender);
@@ -323,61 +297,19 @@ namespace WinCtrlICP
             }
         }
 
-        private void SimConnect_OnConnected(FlightSimProviderBase sender)
+        protected override void OnFlightDataReceived(FlightSimProviderBase sender)
         {
-            if (FlightSimProviders.FSUIPC.IsConnected)
+            if (sender is SimConnectProvider && FSUIPC.IsConnected)
             {
                 return;
             }
-            SetLines(Connected(sender));
-        }
-
-        private void SimConnect_OnQuit(FlightSimProviderBase sender)
-        {
-            if (FlightSimProviders.FSUIPC.IsConnected)
+#if DEBUG
+            if (sender is PreviewFlightSimProvider && (SimConnect.IsConnected || FSUIPC.IsConnected || XPlane.IsConnected))
             {
                 return;
             }
-            SetLines(waiting);
-        }
-
-        private void SimConnect_OnReadyToFly(FlightSimProviderBase sender, ReadyToFly readyToFly)
-        {
-            if (FlightSimProviders.FSUIPC.IsConnected)
-            {
-                return;
-            }
-            if (readyToFly == FlightSim.ReadyToFly.Ready)
-            {
-                UpdateScreen(sender);
-            }
-            else
-            {
-
-                SetLines(FlightSimProviders.SimConnect.IsConnected ? Connected(sender) : waiting);
-            }
-        }
-
-        private void FSUIPC_OnConnected(FlightSimProviderBase sender)
-        {
-            SetLines(Connected(sender));
-        }
-
-        private void FSUIPC_OnQuit(FlightSimProviderBase sender)
-        {
-            SetLines(waiting);
-        }
-
-        private void FSUIPC_OnReadyToFly(FlightSimProviderBase sender, ReadyToFly readyToFly)
-        {
-            if (readyToFly == FlightSim.ReadyToFly.Ready)
-            {
-                UpdateScreen(sender);
-            }
-            else
-            {
-                SetLines(FlightSimProviders.FSUIPC.IsConnected ? Connected(sender) : waiting);
-            }
+#endif
+            UpdateScreen(sender);
         }
 
         public FlightSimProviderBase? IsConnected
@@ -531,37 +463,13 @@ namespace WinCtrlICP
             }
         }
 
-        private void XPlane_OnFlightDataReceived(FlightSimProviderBase sender)
-        {
-            UpdateScreen(sender);
-        }
-
-        private void SimConnect_OnFlightDataReceived(FlightSimProviderBase sender)
-        {
-            if (FlightSimProviders.FSUIPC.IsConnected)
-            {
-                return;
-            }
-            UpdateScreen(sender);
-        }
-
-        private void FSUIPC_OnFlightDataReceived(FlightSimProviderBase sender)
-        {
-            UpdateScreen(sender);
-        }
-
         public const uint SC_MINIMIZE = 0xf020;
         public const uint SC_CLOSE = 0xF060;
         public const uint WM_SYSCOMMAND = 0x0112;
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == SimConnect.WM_USER_SIMCONNECT)
-            {
-                FlightSimProviders.SimConnect.ReceiveMessage();
-                return;
-            }
-            else if (m.Msg == WM_SYSCOMMAND)
+            if (m.Msg == WM_SYSCOMMAND)
             {
                 if (m.WParam.ToInt32() == SC_MINIMIZE)
                 {
@@ -1667,11 +1575,11 @@ namespace WinCtrlICP
             {
                 if (FlightSimProviders.FSUIPC.IsConnected)
                 {
-                    FlightSimProviders.FSUIPC.SendControlToFS(FSUIPC.FsControl.HEADING_BUG_SET.ToString(), Tools.Pack(FlightSimProviders.FSUIPC.HeadingMagneticDegrees, new Tools.PackSpec(Scale: 1.0)));
+                    FlightSimProviders.FSUIPC.SendControlToFS(FSUIPCLib.FsControl.HEADING_BUG_SET.ToString(), Tools.Pack(FlightSimProviders.FSUIPC.HeadingMagneticDegrees, new Tools.PackSpec(Scale: 1.0)));
                 }
                 else
                 {
-                    SimConnect.Instance.SetValue(SimConnectEventId.HeadingBugSet, Tools.Pack(FlightSimProviders.SimConnect.HeadingMagneticDegrees, new Tools.PackSpec(Scale: 1.0)));
+                    FlightSim.SimConnect.Instance.SetValue(SimConnectEventId.HeadingBugSet, Tools.Pack(FlightSimProviders.SimConnect.HeadingMagneticDegrees, new Tools.PackSpec(Scale: 1.0)));
                 }
                 FlightSimProviders.XPlane.SendControlToFS(FlightSim.XPlaneConnect.DataRefId.CockpitAutopilotHeadingMag.ToString(), (float)Math.Round(FlightSimProviders.XPlane.HeadingMagneticDegrees));
             }
@@ -1689,13 +1597,13 @@ namespace WinCtrlICP
                 const int TransitionAltitudeFt = 18000;
                 if (FlightSimProviders.FSUIPC.IsConnected)
                 {
-                    FlightSimProviders.FSUIPC.SendControlToFS(FSUIPC.FsControl.KOHLSMAN_SET.ToString(), Tools.Pack(FlightSimProviders.FSUIPC.AltitudeMSL < TransitionAltitudeFt ? FlightSimProviders.FSUIPC.PressureHectoPascals : StdPressureHpa, new Tools.PackSpec(Scale: 16.0)));
+                    FlightSimProviders.FSUIPC.SendControlToFS(FSUIPCLib.FsControl.KOHLSMAN_SET.ToString(), Tools.Pack(FlightSimProviders.FSUIPC.AltitudeMSL < TransitionAltitudeFt ? FlightSimProviders.FSUIPC.PressureHectoPascals : StdPressureHpa, new Tools.PackSpec(Scale: 16.0)));
                 }
                 else
                 {
-                    SimConnect.Instance.SetValue(SimConnectEventId.KollsmanSet, Tools.Pack(FlightSimProviders.SimConnect.AltitudeMSL < TransitionAltitudeFt ? FlightSimProviders.SimConnect.PressureHectoPascals : StdPressureHpa, new Tools.PackSpec(Scale: 16.0)));
+                    FlightSim.SimConnect.Instance.SetValue(SimConnectEventId.KollsmanSet, Tools.Pack(FlightSimProviders.SimConnect.AltitudeMSL < TransitionAltitudeFt ? FlightSimProviders.SimConnect.PressureHectoPascals : StdPressureHpa, new Tools.PackSpec(Scale: 16.0)));
                 }
-                SimConnect.Instance.SetValue(SimConnectEventId.SecondaryKollsmanSet, Tools.Pack(FlightSimProviders.SimConnect.AltitudeMSL < TransitionAltitudeFt ? FlightSimProviders.SimConnect.PressureHectoPascals : StdPressureHpa, new Tools.PackSpec(Scale: 16.0)));
+                FlightSim.SimConnect.Instance.SetValue(SimConnectEventId.SecondaryKollsmanSet, Tools.Pack(FlightSimProviders.SimConnect.AltitudeMSL < TransitionAltitudeFt ? FlightSimProviders.SimConnect.PressureHectoPascals : StdPressureHpa, new Tools.PackSpec(Scale: 16.0)));
                 FlightSimProviders.XPlane.SendControlToFS(FlightSim.XPlaneConnect.DataRefId.CockpitMiscBarometerSetting.ToString(), FlightSimProviders.XPlane.AltitudeMSL < TransitionAltitudeFt ? (float)FlightSimProviders.XPlane.PressureInchesMercury : StdPressureInHg);
                 FlightSimProviders.XPlane.SendControlToFS(FlightSim.XPlaneConnect.DataRefId.CockpitMiscBarometerSetting2.ToString(), FlightSimProviders.XPlane.AltitudeMSL < TransitionAltitudeFt ? (float)FlightSimProviders.XPlane.PressureInchesMercury : StdPressureInHg);
             }
@@ -1713,25 +1621,11 @@ namespace WinCtrlICP
             }
         }
 
-        private bool _simConnectInitQueued;
-
         private void F16DEDWriterForm_Shown(object sender, EventArgs e)
         {
             RebuildCustomDisplaysMenu();
             UpdateChecked();
             HideWindow();
-
-            if (!_simConnectInitQueued)
-            {
-                _simConnectInitQueued = true;
-                // Delay until the message loop has processed show/minimize.
-                BeginInvoke(new Action(() =>
-                {
-                    if (!IsHandleCreated) return;
-                    FlightSimProviders.SimConnect.MainWindowHandle = Handle;
-                }));
-            }
-
 #if DEBUG
             UpdateScreen(FlightSimProviders.Preview);
 #endif
@@ -1743,12 +1637,6 @@ namespace WinCtrlICP
             {
                 bridge.ShutdownAsync().GetAwaiter().GetResult();
             }
-            FlightSimProviders.XPlane.Deinitialize();
-            FlightSimProviders.SimConnect.Deinitialize();
-            FlightSimProviders.FSUIPC.Deinitialize();
-            // Event though we are not using them:
-            FlightSimProviders.DCS?.Deinitialize();
-            FlightSimProviders.FalconBMS.Deinitialize();
         }
 
         private void startWithMSFSToolStripMenuItem_Click(object sender, EventArgs e)

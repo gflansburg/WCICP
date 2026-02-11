@@ -13,19 +13,23 @@ namespace FlightSim
 
         private bool _eventsWired;
         private bool _disposing;
+        private bool _simConnectInitQueued;
+        private bool _handleInitialized;
 
         public FlightSimForm() : base()
         {
         }
 
-        protected IEnumerable<FlightSimProviderBase> GetProviders()
+        protected virtual IEnumerable<FlightSimProviderBase> GetProviders()
         {
             yield return SimConnect;
             yield return FSUIPC;
             yield return XPlane;
             yield return FalconBMS;
             if (DCS is not null) yield return DCS;
+#if DEBUG
             yield return Preview;
+#endif
         }
 
         private void WireProviderEvents(FlightSimProviderBase p)
@@ -137,7 +141,18 @@ namespace FlightSim
         protected override void OnHandleCreated(EventArgs e)
         {
             base.OnHandleCreated(e);
-            SimConnect.MainWindowHandle = Handle;
+            if (_handleInitialized)
+            {
+                return;
+            }
+            _handleInitialized = true;
+            if (_simConnectInitQueued)
+            {
+                BeginInvoke(new Action(() =>
+                {
+                    SimConnect.MainWindowHandle = Handle;
+                }));
+            }
         }
 
         protected override void OnHandleDestroyed(EventArgs e)
@@ -162,6 +177,24 @@ namespace FlightSim
                 WireProviderEvents(p);
             }
             WireSimConnectOnlyEvents();
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            if (!_simConnectInitQueued)
+            {
+                _simConnectInitQueued = true;
+                // Delay until the message loop has processed show/minimize.
+                BeginInvoke(new Action(() =>
+                {
+                    if (!IsHandleCreated)
+                    {
+                        return;
+                    }
+                    SimConnect.MainWindowHandle = Handle;
+                }));
+            }
         }
 
         protected override void Dispose(bool disposing)
