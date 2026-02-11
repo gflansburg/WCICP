@@ -164,7 +164,8 @@ namespace FlightSim
         private bool _speedBrake = false;
         public override bool SpoilersArmed => _speedBrake;
 
-        public override double SpoilersPercent => _speedBrake ? 100d : 0d;
+        private double _spoilersPercent = 0d;
+        public override double SpoilersPercent => _spoilersPercent;
 
         public override bool ParkingBrakeOn => false;
 
@@ -596,6 +597,8 @@ namespace FlightSim
 
         private DCSBIOSOutput? DCSBIOSOutputSpeedBrake { get; set; }
 
+        private DCSBIOSOutput? DCSBIOSOutputSpoilersPosition { get; set; }
+
         public override double AltitudeAGLFeet => AltitudeMSLFeet;
 
         public override double AltitudeTrueFeet => AltitudeMSLFeet;
@@ -719,6 +722,7 @@ namespace FlightSim
             DCSBIOSOutputFlcsRlyStatus = GetDCSBIOSOutput("LIGHT_FLCS");
             DCSBIOSOutputEpuStatus = GetDCSBIOSOutput("LIGHT_EPU");
             DCSBIOSOutputSpeedBrake = GetDCSBIOSOutput("SPEEDBRAKE_INDICATOR");
+            DCSBIOSOutputSpoilersPosition = GetDCSBIOSOutput("SPOILERS_POSITION");
             DCSBIOSOutputPilotName = GetDCSBIOSOutput("PILOTNAME");
             DCSBIOSOutputAirspeedIndicated = GetDCSBIOSOutput("IAS_US_INT");
             DCSBIOSOutputAirspeedTrue = GetDCSBIOSOutput("TAS_US_INT");
@@ -969,6 +973,11 @@ namespace FlightSim
                 if (DCSBIOSOutputCourseTrue?.StringValueHasChanged(e.Address, e.StringData.Trim()) == true)
                 {
                     _courseTrueRadians = Convert.ToDouble(DCSBIOSOutputCourseTrue.LastStringValue = e.StringData.Trim());
+                    isDirty = true;
+                }
+                if (DCSBIOSOutputSpoilersPosition?.StringValueHasChanged(e.Address, e.StringData.Trim()) == true)
+                {
+                    _spoilersPercent = Math.Clamp(Convert.ToDouble(DCSBIOSOutputSpoilersPosition.LastStringValue = e.StringData.Trim()), 0.0f, 1.0f) * 100.0;
                     isDirty = true;
                 }
                 if (DCSBIOSOutputADF?.StringValueHasChanged(e.Address, e.StringData.Trim()) == true)
